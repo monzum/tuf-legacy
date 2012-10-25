@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Tuf-legacy : Incorporate TUF into legacy applications." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Tuf-legacy</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/monzum/tuf-legacy">View on GitHub</a>
+
+          <h1 id="project_title">Tuf-legacy</h1>
+          <h2 id="project_tagline">Incorporate TUF into legacy applications.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/monzum/tuf-legacy/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/monzum/tuf-legacy/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>TUF For Legacy Applications</h1>
+
+<h2>Goal</h2>
+
+<p>To leverage the security mechanisms of the The Update Framework (TUF) to provide secure software updates for legacy applications. </p>
+
+<h2>Motivation</h2>
+
+<p>Software updaters generally lack effective security mechanisms to assure the correctness and recency of the updated file. They typically use a cryptographic  signature of the downloaded file and verify that  a trusted key made the signature. This approach presents various security flaws:
+Rollback attack, where the attacker submits old files as latest updates
+Endless data attack, where the attacker issues an infinite stream of data when responding to an update request
+Malicious mirrors preventing updates, where the attacker takes control of a mirror and blocks all update requests.
+The Update Framework (TUF) provides security against the attacks enumerated above (and many more) by implementing mechanisms  for various security checks. Examples of security checks are: timestamp check to prevent the download of outdated files, periodic mirror content check to make sure that mirrors contacted for updates are legitimate, and release check to verify metadata of the system are up to date.  With TUF, software updaters do not interact with mirrors but instead rely on the features of TUF for secure file update. To integrate TUF in a software updaters, developers need to modify their current  distutil setup. This may be difficult for legacy applications, where the setup is not available. In this project, we present an approach to automatically enable TUF for legacy software updaters, without the need to modify the application code.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Tuf-legacy maintained by <a href="https://github.com/monzum">monzum</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
