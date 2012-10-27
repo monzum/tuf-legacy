@@ -242,6 +242,9 @@ int init_master_sock()
 
 int socket(int domain, int type, int protocol)
 {
+  printf("Got here");
+  fflush(stdout);
+
   /* Initialize everything and create the master socket */
   int sockfd = init_master_sock();
 
@@ -598,288 +601,295 @@ ssize_t recvfrom(int sockfd, void *buffer, size_t length,
 
 // ################ READ AND WRITE CALLS ###########################
 
-ssize_t write(int sockfd, const void *message, size_t length)
-{
-  char arg_list[(int)length + 20];
-  char buf[20] = "";
-
-  int repy_sock_fd = socket_fd_dict[sockfd % MAX_SOCK_FD];
-
-  memset(arg_list, 0, strlen(arg_list));
-  memset(buf, 0, strlen(buf));
-  my_itoa(repy_sock_fd, buf, 10);
-  strcat(arg_list, buf);
-  strcat(arg_list, ",");
-
-
-  /* We add the message as the last element in the 
-   * arg list because the message might contain any character,
-   * including the delimeter. */
-  strncat(arg_list, (char*)message, length);
-
-
-  char recv_buf[RECV_SIZE];
-  int err_val;
-
-  // Send the info to the Repy proxy server
-  forward_api_to_proxy(sockfd, "write", arg_list, recv_buf, &err_val);
- 
-  if (err_val < 0)
-    return (ssize_t) atoi(recv_buf); 
-  else
-    return -1;
-  
-}
-
-
-
-ssize_t read(int sockfd, void *buffer, size_t length)
-{
-  char arg_list[20] = "";
-  char buf[20] = "";
-
-  int repy_sock_fd = socket_fd_dict[sockfd % MAX_SOCK_FD];
-
-  memset(arg_list, 0, strlen(arg_list));
-  memset(buf, 0, strlen(buf));
-  my_itoa(repy_sock_fd, buf, 10);
-  strcat(arg_list, buf);
-  strcat(arg_list, ",");
-
-  memset(buf, 0, strlen(buf));
-  my_itoa((int) length, buf, 10);
-  strcat(arg_list, buf);
-
- 
-  char recv_buf[RECV_SIZE];
-  int err_val;
-
-  // Send the info to the Repy proxy server
-  forward_api_to_proxy(sockfd, "read", arg_list, recv_buf, &err_val);
-
-    /* Check to make sure there was no error. */
-  if (err_val < 0) {
-    strcpy(buffer, recv_buf);
-    return (ssize_t) strlen(recv_buf);
-  }
-  else {
-    errno = err_val;
-    return (ssize_t) -1;
-  }
-
-}
-
-
-
-
-// ################ SOCKET OPTION CALLS ##########################
-
-int fcntl(int sockfd, int cmd, ...)
-{
-  char arg_list[50] = "";
-  char buf[20] = "";
-
-  int repy_sock_fd = socket_fd_dict[sockfd % MAX_SOCK_FD];
-
-  my_itoa(repy_sock_fd, buf, 10);
-  strcat(arg_list, buf);
-  strcat(arg_list, ",");
-
-  memset(buf, 0, strlen(buf));
-  my_itoa(cmd, buf, 10);
-  strcat(arg_list, buf);
-
-  /* Since we have a variable argument '...' we do not know
-   * the length or what the arguments are. Therefore we are
-   * going to use the variable argument library stdarg.h to
-   * retrieve all the arguments.
-   */
-  va_list var_arg_list;
-  int arg_val;
-
-  /* Start processing the variable arguments. */
-  va_start(var_arg_list, cmd);
-
-  /* Go through the arg_list and retrieve all the various
-   * arguments that were provided. Assume that all the 
-   * variables are of type 'int'.
-   */
-  while((arg_val = va_arg(var_arg_list, int)) != NULL){
-    strcat(arg_list, ",");
-
-    /* Convert and add all the arguments to the list. */
-    memset(buf, 0, strlen(0));
-    my_itoa(arg_val, buf, 10);
-    strcat(arg_list, buf);
-  }
-
-  /* End processing the variable arguments. */
-  va_end(var_arg_list);
-
-  char recv_buf[RECV_SIZE];
-  int err_val;
-
-  // Send the info to the Repy proxy server.
-  forward_api_to_proxy(sockfd, "fcntl", arg_list, recv_buf, &err_val);
-
-  if (err_val < 0)
-    return atoi(recv_buf); 
-  else
-    return -1;
-
-  
-}
-
-
-
-
-
-int getsockopt(int sockfd, int level, int option_name,
-	       void *option_value, socklen_t *option_len)
-{
-  char arg_list[20] = "";
-  char buf[10] = "";
-
-  int repy_sock_fd = socket_fd_dict[sockfd % MAX_SOCK_FD];
-
-  memset(arg_list, 0, strlen(arg_list));
-  memset(buf, 0, strlen(buf));
-  my_itoa(repy_sock_fd, buf, 10);
-  strcat(arg_list, buf);
-  strcat(arg_list, ",");
-
-  memset(buf, 0, strlen(buf));
-  my_itoa(level, buf, 10);
-  strcat(arg_list, buf);
-  strcat(arg_list, ",");
-
-  memset(buf, 0, strlen(buf));
-  my_itoa(option_name, buf, 10);
-  strcat(arg_list, buf);
-
-  char recv_buf[RECV_SIZE];
-  int err_val;
-
-  // Send the info to the Repy proxy server
-  forward_api_to_proxy(sockfd, "getsockopt", arg_list, recv_buf, &err_val);
-
-  if (err_val < 0)
-    return atoi(recv_buf); 
-  else
-    return -1;
-
-}
-
-
-
-
-
-int setsockopt(int sockfd, int level, int option_name, const void *option_value, socklen_t option_len)
-{
-  char arg_list[30] = "";
-  char buf[10] = "";
-
-  int repy_sock_fd = socket_fd_dict[sockfd % MAX_SOCK_FD];
-
-  memset(arg_list, 0, strlen(arg_list));
-  memset(buf, 0, strlen(buf));
-  my_itoa(repy_sock_fd, buf, 10);
-  strcat(arg_list, buf);
-  strcat(arg_list, ",");
-
-  memset(buf, 0, strlen(buf));
-  my_itoa(level, buf, 10);
-  strcat(arg_list, buf);
-  strcat(arg_list, ",");
-  
-  memset(buf, 0, strlen(buf));
-  my_itoa(option_name, buf, 10);
-  strcat(arg_list, buf);
-  strcat(arg_list, ",");
-
-  strcat(arg_list, (char*) option_value);
-  strcat(arg_list, ",");
-
-  char recv_buf[RECV_SIZE];
-  int err_val;
-
-  // Send the info to the Repy proxy server
-  forward_api_to_proxy(sockfd, "setsockopt", arg_list, recv_buf, &err_val);
-
-  if (err_val < 0)
-    return atoi(recv_buf); 
-  else
-    return -1;
-
-}
-
-
-
-// ##################### MISCELLANEOUS CALLS ##############################
-
-int getpeername(int sockfd, struct sockaddr *address,
-		socklen_t *address_len)
-{
-  char arg_list[8] = "";
-  char buf[8] = "";
-
-  int repy_sock_fd = socket_fd_dict[sockfd % MAX_SOCK_FD];
-
-  memset(arg_list, 0, strlen(arg_list));
-  memset(buf, 0, strlen(buf));
-  my_itoa(repy_sock_fd, buf, 10);
-  strcat(arg_list, buf);
-
-  char recv_buf[RECV_SIZE];
-  char return_val[10];
-  int err_val;
-
-  // Send the info to the Repy proxy server
-  forward_api_to_proxy(sockfd, "getpeername", arg_list, recv_buf, &err_val);
-
-  if (err_val < 0) {
-    deserialize_sockaddr(address, recv_buf, return_val);
-    return atoi(return_val);
-  }
-  else
-    return -1; 
-
-}
-
-
-
-int getsockname(int sockfd, struct sockaddr *address,
-		socklen_t *address_len)
-{
-  char arg_list[8] = "";
-  char buf[8] = "";
-
-  int repy_sock_fd = socket_fd_dict[sockfd % MAX_SOCK_FD];
-
-  memset(arg_list, 0, strlen(arg_list));
-  memset(buf, 0, strlen(buf));
-  my_itoa(repy_sock_fd, buf, 10);
-  strcat(arg_list, buf);
-
-  char recv_buf[RECV_SIZE];
-  char return_val[10];
-  int err_val;
-
-  // Send the info to the Repy proxy server
-  forward_api_to_proxy(sockfd, "getsockname", arg_list, recv_buf, &err_val);
-
-  if (err_val < 0){
-    deserialize_sockaddr(address, recv_buf, return_val);
-    return atoi(return_val);
-  } 
-  else
-    return -1;
-}
-
-
-
-
-
+//ssize_t write(int sockfd, const void *message, size_t length)
+//{
+//  char arg_list[(int)length + 20];
+//  char buf[20] = "";
+//
+//  int repy_sock_fd = socket_fd_dict[sockfd % MAX_SOCK_FD];
+//
+//  memset(arg_list, 0, strlen(arg_list));
+//  memset(buf, 0, strlen(buf));
+//  my_itoa(repy_sock_fd, buf, 10);
+//  strcat(arg_list, buf);
+//  strcat(arg_list, ",");
+//
+//
+//  /* We add the message as the last element in the 
+//   * arg list because the message might contain any character,
+//   * including the delimeter. */
+//  strncat(arg_list, (char*)message, length);
+//
+//
+//  char recv_buf[RECV_SIZE];
+//  int err_val;
+//
+//  // Send the info to the Repy proxy server
+//  forward_api_to_proxy(sockfd, "write", arg_list, recv_buf, &err_val);
+// 
+//  if (err_val < 0)
+//    return (ssize_t) atoi(recv_buf); 
+//  else
+//    return -1;
+//  
+//}
+//
+//
+//
+//ssize_t read(int sockfd, void *buffer, size_t length)
+//{
+//  char arg_list[20] = "";
+//  char buf[20] = "";
+//
+//  int repy_sock_fd = socket_fd_dict[sockfd % MAX_SOCK_FD];
+//
+//  memset(arg_list, 0, strlen(arg_list));
+//  memset(buf, 0, strlen(buf));
+//  my_itoa(repy_sock_fd, buf, 10);
+//  strcat(arg_list, buf);
+//  strcat(arg_list, ",");
+//
+//  memset(buf, 0, strlen(buf));
+//  my_itoa((int) length, buf, 10);
+//  strcat(arg_list, buf);
+//
+// 
+//  char recv_buf[RECV_SIZE];
+//  int err_val;
+//
+//  // Send the info to the Repy proxy server
+//  forward_api_to_proxy(sockfd, "read", arg_list, recv_buf, &err_val);
+//
+//    /* Check to make sure there was no error. */
+//  if (err_val < 0) {
+//    strcpy(buffer, recv_buf);
+//    return (ssize_t) strlen(recv_buf);
+//  }
+//  else {
+//    errno = err_val;
+//    return (ssize_t) -1;
+//  }
+//
+//}
+//
+//
+//
+//
+//// ################ SOCKET OPTION CALLS ##########################
+//
+//
+//int fcntl(int sockfd, int cmd, ...)
+//{
+//  printf("Got here2");
+//  fflush(stdout);
+//  char arg_list[50] = "";
+//  char buf[20] = "";
+//
+//  int repy_sock_fd = socket_fd_dict[sockfd % MAX_SOCK_FD];
+//
+//  my_itoa(repy_sock_fd, buf, 10);
+//  strcat(arg_list, buf);
+//  strcat(arg_list, ",");
+//
+//  memset(buf, 0, strlen(buf));
+//  my_itoa(cmd, buf, 10);
+//  strcat(arg_list, buf);
+//
+//  /* Since we have a variable argument '...' we do not know
+//   * the length or what the arguments are. Therefore we are
+//   * going to use the variable argument library stdarg.h to
+//   * retrieve all the arguments.
+//   */
+//  va_list var_arg_list;
+//  int arg_val;
+//
+//  /* Start processing the variable arguments. */
+//  va_start(var_arg_list, cmd);
+//
+//  /* Go through the arg_list and retrieve all the various
+//   * arguments that were provided. Assume that all the 
+//   * variables are of type 'int'.
+//   */
+//  while((arg_val = va_arg(var_arg_list, int)) != NULL){
+//    strcat(arg_list, ",");
+//
+//    /* Convert and add all the arguments to the list. */
+//    memset(buf, 0, strlen(0));
+//    my_itoa(arg_val, buf, 10);
+//    strcat(arg_list, buf);
+//  }
+//
+//  /* End processing the variable arguments. */
+//  va_end(var_arg_list);
+//
+//  char recv_buf[RECV_SIZE];
+//  int err_val;
+//
+//  // Send the info to the Repy proxy server.
+//  forward_api_to_proxy(sockfd, "fcntl", arg_list, recv_buf, &err_val);
+//
+//  if (err_val < 0)
+//    return atoi(recv_buf); 
+//  else
+//    return -1;
+//
+//  
+//}
+//
+//
+//
+//
+//
+//int getsockopt(int sockfd, int level, int option_name,
+//	       void *option_value, socklen_t *option_len)
+//{
+//  printf("Got here3");
+//  fflush(stdout);
+//  char arg_list[20] = "";
+//  char buf[10] = "";
+//
+//  int repy_sock_fd = socket_fd_dict[sockfd % MAX_SOCK_FD];
+//
+//  memset(arg_list, 0, strlen(arg_list));
+//  memset(buf, 0, strlen(buf));
+//  my_itoa(repy_sock_fd, buf, 10);
+//  strcat(arg_list, buf);
+//  strcat(arg_list, ",");
+//
+//  memset(buf, 0, strlen(buf));
+//  my_itoa(level, buf, 10);
+//  strcat(arg_list, buf);
+//  strcat(arg_list, ",");
+//
+//  memset(buf, 0, strlen(buf));
+//  my_itoa(option_name, buf, 10);
+//  strcat(arg_list, buf);
+//
+//  char recv_buf[RECV_SIZE];
+//  int err_val;
+//
+//  // Send the info to the Repy proxy server
+//  forward_api_to_proxy(sockfd, "getsockopt", arg_list, recv_buf, &err_val);
+//
+//  if (err_val < 0)
+//    return atoi(recv_buf); 
+//  else
+//    return -1;
+//
+//}
+//
+//
+//
+//
+//
+//int setsockopt(int sockfd, int level, int option_name, const void *option_value, socklen_t option_len)
+//{
+//  printf("Got here4");
+//  fflush(stdout);
+//  char arg_list[30] = "";
+//  char buf[10] = "";
+//
+//  int repy_sock_fd = socket_fd_dict[sockfd % MAX_SOCK_FD];
+//
+//  memset(arg_list, 0, strlen(arg_list));
+//  memset(buf, 0, strlen(buf));
+//  my_itoa(repy_sock_fd, buf, 10);
+//  strcat(arg_list, buf);
+//  strcat(arg_list, ",");
+//
+//  memset(buf, 0, strlen(buf));
+//  my_itoa(level, buf, 10);
+//  strcat(arg_list, buf);
+//  strcat(arg_list, ",");
+//  
+//  memset(buf, 0, strlen(buf));
+//  my_itoa(option_name, buf, 10);
+//  strcat(arg_list, buf);
+//  strcat(arg_list, ",");
+//
+//  strcat(arg_list, (char*) option_value);
+//  strcat(arg_list, ",");
+//
+//  char recv_buf[RECV_SIZE];
+//  int err_val;
+//
+//  // Send the info to the Repy proxy server
+//  forward_api_to_proxy(sockfd, "setsockopt", arg_list, recv_buf, &err_val);
+//
+//  if (err_val < 0)
+//    return atoi(recv_buf); 
+//  else
+//    return -1;
+//
+//}
+//
+//
+//
+//// ##################### MISCELLANEOUS CALLS ##############################
+//
+//int getpeername(int sockfd, struct sockaddr *address,
+//		socklen_t *address_len)
+//{
+//  char arg_list[8] = "";
+//  char buf[8] = "";
+//
+//  int repy_sock_fd = socket_fd_dict[sockfd % MAX_SOCK_FD];
+//
+//  memset(arg_list, 0, strlen(arg_list));
+//  memset(buf, 0, strlen(buf));
+//  my_itoa(repy_sock_fd, buf, 10);
+//  strcat(arg_list, buf);
+//
+//  char recv_buf[RECV_SIZE];
+//  char return_val[10];
+//  int err_val;
+//
+//  // Send the info to the Repy proxy server
+//  forward_api_to_proxy(sockfd, "getpeername", arg_list, recv_buf, &err_val);
+//
+//  if (err_val < 0) {
+//    deserialize_sockaddr(address, recv_buf, return_val);
+//    return atoi(return_val);
+//  }
+//  else
+//    return -1; 
+//
+//}
+//
+//
+//
+//int getsockname(int sockfd, struct sockaddr *address,
+//		socklen_t *address_len)
+//{
+//  char arg_list[8] = "";
+//  char buf[8] = "";
+//
+//  int repy_sock_fd = socket_fd_dict[sockfd % MAX_SOCK_FD];
+//
+//  memset(arg_list, 0, strlen(arg_list));
+//  memset(buf, 0, strlen(buf));
+//  my_itoa(repy_sock_fd, buf, 10);
+//  strcat(arg_list, buf);
+//
+//  char recv_buf[RECV_SIZE];
+//  char return_val[10];
+//  int err_val;
+//
+//  // Send the info to the Repy proxy server
+//  forward_api_to_proxy(sockfd, "getsockname", arg_list, recv_buf, &err_val);
+//
+//  if (err_val < 0){
+//    deserialize_sockaddr(address, recv_buf, return_val);
+//    return atoi(return_val);
+//  } 
+//  else
+//    return -1;
+//}
+
+
+
+
+/*
 int select(int nfds, fd_set *readfds, fd_set *writefds, 
 	   fd_set *errorfds, struct timeval *timeout)
 {
@@ -908,65 +918,65 @@ int select(int nfds, fd_set *readfds, fd_set *writefds,
     return -1;
 
 }
-
+*/
 
 // ##################### CLOSE CALLS ##############################3
 
-int shutdown(int sockfd, int how)
-{
-  char arg_list[10] = "";
-  char buf[10] = "";
-
-  int repy_sock_fd = socket_fd_dict[sockfd % MAX_SOCK_FD];
-
-  memset(arg_list, 0, strlen(arg_list));
-  memset(buf, 0, strlen(buf));
-  my_itoa(repy_sock_fd, buf, 10);
-  strcat(arg_list, buf);
-  strcat(arg_list, ",");
-
-  memset(buf, 0, strlen(buf));
-  my_itoa(how, buf, 10);
-  strcat(arg_list, buf);
-
-  char recv_buf[RECV_SIZE];
-  int err_val;
-
-  // Send the info to the Repy proxy server
-  forward_api_to_proxy(sockfd, "shutdown", arg_list, recv_buf, &err_val);
-
-  if (err_val < 0)
-    return atoi(recv_buf); 
-  else
-    return -1;	
-}
-
-
-
-
-int close(int sockfd)
-{
-  char arg_list[10] = "";
-  char buf[10] = "";
-
-  int repy_sock_fd = socket_fd_dict[sockfd % MAX_SOCK_FD];
-
-  memset(arg_list, 0, strlen(arg_list));
-  memset(buf, 0, strlen(buf));
-  my_itoa(repy_sock_fd, buf, 10);
-  strcat(arg_list, buf);
-
-  char recv_buf[RECV_SIZE];
-  int err_val;
-
-  // Send the info to the Repy proxy server
-  forward_api_to_proxy(sockfd, "close", arg_list, recv_buf, &err_val);
-
-  if (err_val < 0)
-    return atoi(recv_buf); 
-  else
-    return -1;	
-}
+//int shutdown(int sockfd, int how)
+//{
+//  char arg_list[10] = "";
+//  char buf[10] = "";
+//
+//  int repy_sock_fd = socket_fd_dict[sockfd % MAX_SOCK_FD];
+//
+//  memset(arg_list, 0, strlen(arg_list));
+//  memset(buf, 0, strlen(buf));
+//  my_itoa(repy_sock_fd, buf, 10);
+//  strcat(arg_list, buf);
+//  strcat(arg_list, ",");
+//
+//  memset(buf, 0, strlen(buf));
+//  my_itoa(how, buf, 10);
+//  strcat(arg_list, buf);
+//
+//  char recv_buf[RECV_SIZE];
+//  int err_val;
+//
+//  // Send the info to the Repy proxy server
+//  forward_api_to_proxy(sockfd, "shutdown", arg_list, recv_buf, &err_val);
+//
+//  if (err_val < 0)
+//    return atoi(recv_buf); 
+//  else
+//    return -1;	
+//}
+//
+//
+//
+//
+//int close(int sockfd)
+//{
+//  char arg_list[10] = "";
+//  char buf[10] = "";
+//
+//  int repy_sock_fd = socket_fd_dict[sockfd % MAX_SOCK_FD];
+//
+//  memset(arg_list, 0, strlen(arg_list));
+//  memset(buf, 0, strlen(buf));
+//  my_itoa(repy_sock_fd, buf, 10);
+//  strcat(arg_list, buf);
+//
+//  char recv_buf[RECV_SIZE];
+//  int err_val;
+//
+//  // Send the info to the Repy proxy server
+//  forward_api_to_proxy(sockfd, "close", arg_list, recv_buf, &err_val);
+//
+//  if (err_val < 0)
+//    return atoi(recv_buf); 
+//  else
+//    return -1;	
+//}
 
 
 
