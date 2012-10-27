@@ -15,7 +15,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
-
+ 
 
 /* Define some global variables. */
 int RECV_SIZE = 2048;
@@ -27,6 +27,9 @@ int MAX_SOCK_FD = 1024;
 int socket_fd_dict[1024];
 
 
+/* A structure for storing network function name
+ * and arguments for the network functions.
+ */
 typedef struct callfunc
 {
   char func_name[20];
