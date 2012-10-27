@@ -18,7 +18,9 @@
   the argument. After unpacking the arguments, it calls the appropriate
   function in order to process a particular network call. In order to use
   LibnitListener, it must first be initialized with a network call processor
-  module that defines how to handle the network calls. 
+  module that defines how to handle the network calls. Look at 
+  network_call_processor.NetworkCallProcessor to see how to define the
+  processor module.
 
   The following function calls should be defined in the processor module:
     * call_socket()
@@ -57,5 +59,40 @@
 """
 
 
-class 
+class LibnitListener():
+  # LibnitListener is a module that is used to listen and process
+  # network calls that is forwarded by libnit which is interposing
+  # on network calls on an application.
+
+
+  def __init__(self, network_call_processor):
+    """
+    <Purpose>
+      Initialize LibnitListener with a network call processor.
+
+    <Arguments>
+      A processor function that can be used to process network
+      calls. Take a look at the NullProcessor class to understand
+      which calls need to be defined.
+  
+    <Exceptions>
+      None
+
+    <Return>
+      None
+    """
+
+    self.network_call_processor =   
+
+
+
+
+
+
+
+
+
+
+       
+  
 
