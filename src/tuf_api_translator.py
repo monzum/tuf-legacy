@@ -272,12 +272,12 @@ class TUFTranslator(NetworkCallProcessor):
 	if self.misc_call.get(str_sock_id):
 		try:
 			sock_close = self.misc_calls[str_sock_id]["sock_obj"].close()
-			del self.misc_call(str_sock_id)
-			del self.network_calls(str_sock_id)
+			del self.misc_call[str_sock_id]
+			del self.network_calls[str_sock_id]
 		except socket.error, msg:
-			print "Coould not close socket. Error code "+str(msg[0]+': '+msg[1]
+			print "Coould not close socket. Error code "+str(msg[0])+': '+msg[1]
 	else:
-		del self.network_calls(str_sock_id)
+		del self.network_calls[str_sock_id]
 	
 	if len(self.network_calls) == 0:
 		self.sock_id = 1024
