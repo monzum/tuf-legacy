@@ -1,0 +1,324 @@
+
+
+Listing the keyids in '/tmp/TestSignercliMethods_oSM8Vj'
+de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb
+b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f
+04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944
+84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918
+
+Listing the keyids in '/tmp/TestSignercliMethods_eUJq7n'
+de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb
+b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f
+04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944
+84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918
+
+Listing the keyids in '/tmp/TestSignercliMethods_eUJq7n'
+de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb
+b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f
+04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944
+84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918
+
+Listing the keyids in '/tmp/TestSignercliMethods_eUJq7n'
+de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb
+b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f
+04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944
+84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918
+
+Listing the keyids in '/tmp/TestSignercliMethods_s9uNQZ'
+de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb
+b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f
+04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944
+84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918
+
+Listing the keyids in '/tmp/TestSignercliMethods_s9uNQZ'
+de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb
+b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f
+04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944
+84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918
+
+Listing the keyids in '/tmp/TestSignercliMethods_s9uNQZ'
+de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb
+b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f
+04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944
+84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918
+
+*WARNING* Printing the private key reveals sensitive information *WARNING*
+{
+  "keytype": "rsa", 
+  "keyval": {
+    "private": "-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEAw4tm601jbFaU50gV26BPO7lqZgzeVuXIlB5Hr9lETGkJcY2g\ndoixX6yt7XzDfRlB4N4siVpShAsYDaKbgrAwuQq2o4UMJd96djPuvyw81vRDJNRm\nBp/s8d5+3Jbuy+voWq0A088fJHDfkMEiNPSB9BoEKkJOBJHyuMttsaNtOcdTKqfc\nzTdBwbIs8dbmN9X1Rpg5xByHOyuWfKbLODaGRUuN3JufAbTLEpxuCeVlnEefWuSv\nTxk3jI3866k5W639B+gLmXhtaONjIJsQqZjqvs9hoBmW+jtC7sd1yXvOJV3xkEnp\nQ9ZFJ3f4AJpx3Im5lTdjPu1wi71FMRrxKc7Q2wIDAQABAoIBAERzHtLNYzlAUZ1o\nSWZ5BmNUs18HsCjhBMZ8lwGCX3sT5Z9fQUVc8iIYk0Wnv9KhrcLmYtatzGa2b3QO\ncLtdq6CKlIZHA4qaYQbRhQhclutz07EnvJMjFlFQXj4fg3XUnaBoIPsD7NXXwRqt\n0KiS0o69MKoOTbshz8JKS5q8J3bqpydsMg0tzAigkW5+sFVrvB9mYpendIArFYKe\njBcUyygNnCjhFvlWSQATSdQndX3+9NY277dJEyR5q2BcCqIuG1qBmrbHPFK6GyF7\nWx6MEHWPSVlrl5DuFHJlwnWVrKlNmxINRc0uhStMtKYjr/E/Mwz4W8qBBioaLg7/\niIrwBEkCgYEA8TutvO8ZxY9rSAmo8OGa785UmDB2RL6wrmRqmGhn/K0fNlXBm7nh\n+XNhCYa7qK7YVCWAVf9XT8PJIpLmVTCyFb6Nb7L0fgM3SS3xj4pXocib7FJ/HJc3\ngPo/E2vOBf1Iw3cgSmqwD0eOM8TYI9NRwW8xH+QRm3uwP4fOMLxOjRcCgYEAz4O+\n6MKQrYDoegkypaYVgnu06ChJoGqQM6I3Xq6h18ES4r3io/GmfcTP/7gCVtyUXbVY\nJEJHlg9w/oYpsEl2WItN8OUN2U15gf0I3O3DNbpKdUMDnm+Vb1m7YfuRH2X6o8CI\nkxe5xiE9XBC51Y1oQy4fEoY/SRfbve3MdglDnN0CgYArhrodegLra6pO0DdkZ0Ce\nflszLqNYWhPlE4dMQqJorBASrLyHTa3hZZkfr+jSUeIEpNOYML9fTBNRorHesy+e\nzsgUXHTS+9+Q27JXVP3k2h6QMH5w+TPxmLWi2nPNDtt/MVJpOwDTcPTOkHjzVeDN\nhzOU7oDizhmKDQX+Myv1NwKBgEBc5Y6+Ii+eZvzK84mLXOqOwgqrzEJUKwvIyZG1\nan9H5DqtmKku32vs6nKvORKF8gKqp37/i8KQYYSgSjfiYTGPa4pHESeQLxrRR7l2\niXCVqlh6g5nVlCzoUQVQCLALalT196Zf2oAIeUaf7XO+G1OS75JIT0K1grODGUKX\nFwCFAoGAeqIzLGvKQmjVPCmc3ddJZTfgqmEqAFrVx/D+SLIM9psEDD308fU5ooRN\nbk5dHlDlYwXSHv/0zf+3bWkqMHtLCTVc/gTBtQbzEcw04dw0pYp4FHQnFSQdGufk\nNWv2Ovg71KflTh/njtP/fLF8S52lrVyHzTddWt9tMHkzeaMroUQ=\n-----END RSA PRIVATE KEY-----\n", 
+    "public": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw4tm601jbFaU50gV26BP\nO7lqZgzeVuXIlB5Hr9lETGkJcY2gdoixX6yt7XzDfRlB4N4siVpShAsYDaKbgrAw\nuQq2o4UMJd96djPuvyw81vRDJNRmBp/s8d5+3Jbuy+voWq0A088fJHDfkMEiNPSB\n9BoEKkJOBJHyuMttsaNtOcdTKqfczTdBwbIs8dbmN9X1Rpg5xByHOyuWfKbLODaG\nRUuN3JufAbTLEpxuCeVlnEefWuSvTxk3jI3866k5W639B+gLmXhtaONjIJsQqZjq\nvs9hoBmW+jtC7sd1yXvOJV3xkEnpQ9ZFJ3f4AJpx3Im5lTdjPu1wi71FMRrxKc7Q\n2wIDAQAB\n-----END PUBLIC KEY-----\n"
+  }
+}
+
+THE ROLE IS:  'release'
+Password for keyid: '04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944' is tmp_NeuwAzK
+
+THE ROLE IS:  'timestamp'
+Password for keyid: 'b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f' is tmp_OmYqoCl
+
+THE ROLE IS:  'root'
+Password for keyid: '84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918' is tmp_UdeJcLy
+
+THE ROLE IS:  'root'
+Password for keyid: '84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918' is tmp_UdeJcLy
+
+THE ROLE IS:  'root'
+Password for keyid: '84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918' is tmp_UdeJcLy
+
+THE ROLE IS:  'release'
+Password for keyid: '04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944' is tmp_NeuwAzK
+
+THE ROLE IS:  'timestamp'
+Password for keyid: 'b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f' is tmp_OmYqoCl
+
+THE ROLE IS:  'root'
+Password for keyid: '84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918' is tmp_zkcVjOV
+
+THE ROLE IS:  'release'
+Password for keyid: '04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944' is tmp_NeuwAzK
+
+THE ROLE IS:  'release'
+Password for keyid: '04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944' is tmp_NeuwAzK
+
+THE ROLE IS:  'release'
+Password for keyid: '04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944' is tmp_NeuwAzK
+
+THE ROLE IS:  'release'
+Password for keyid: '04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944' is tmp_NeuwAzK
+
+THE ROLE IS:  'timestamp'
+Password for keyid: 'b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f' is tmp_OmYqoCl
+
+THE ROLE IS:  'root'
+Password for keyid: '84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918' is tmp_zkcVjOV
+
+THE ROLE IS:  'targets'
+Password for keyid: 'de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb' is tmp_ZFaWukc
+
+THE ROLE IS:  'root'
+Password for keyid: '84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918' is tmp_zkcVjOV
+
+Printing loaded key -> ['84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918']
+IN _get_role_config!!!
+['84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918']
+['84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918']
+
+THE ROLE IS:  'root'
+Password for keyid: '84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918' is tmp_PdORMhZ
+
+Printing loaded key -> []
+Could not load keyid: 84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918
+
+THE ROLE IS:  'root'
+Password for keyid: '84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918' is tmp_PdORMhZ
+
+Printing loaded key -> []
+Could not load keyid: 84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918
+
+THE ROLE IS:  'root'
+Password for keyid: '84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918' is tmp_PdORMhZ
+
+Printing loaded key -> []
+Could not load keyid: 84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918
+IN _get_role_config!!!
+['84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918']
+[]
+
+THE ROLE IS:  'targets'
+Password for keyid: 'de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb' is tmp_ZFaWukc
+
+Printing loaded key -> ['de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb']
+IN _get_role_config!!!
+['de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb']
+['de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb']
+
+THE ROLE IS:  'targets'
+Password for keyid: 'de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb' is tmp_vnfWWiT
+
+Printing loaded key -> []
+Could not load keyid: de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb
+
+THE ROLE IS:  'targets'
+Password for keyid: 'de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb' is tmp_vnfWWiT
+
+Printing loaded key -> []
+Could not load keyid: de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb
+
+THE ROLE IS:  'targets'
+Password for keyid: 'de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb' is tmp_vnfWWiT
+
+Printing loaded key -> []
+Could not load keyid: de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb
+IN _get_role_config!!!
+['de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb']
+[]
+
+THE ROLE IS:  'release'
+Password for keyid: '04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944' is tmp_NeuwAzK
+
+Printing loaded key -> ['04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944']
+IN _get_role_config!!!
+['04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944']
+['04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944']
+
+THE ROLE IS:  'release'
+Password for keyid: '04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944' is tmp_IbWJLTj
+
+Printing loaded key -> []
+Could not load keyid: 04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944
+
+THE ROLE IS:  'release'
+Password for keyid: '04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944' is tmp_IbWJLTj
+
+Printing loaded key -> []
+Could not load keyid: 04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944
+
+THE ROLE IS:  'release'
+Password for keyid: '04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944' is tmp_IbWJLTj
+
+Printing loaded key -> []
+Could not load keyid: 04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944
+IN _get_role_config!!!
+['04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944']
+[]
+
+THE ROLE IS:  'timestamp'
+Password for keyid: 'b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f' is tmp_OmYqoCl
+
+Printing loaded key -> ['b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f']
+IN _get_role_config!!!
+['b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f']
+['b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f']
+
+THE ROLE IS:  'timestamp'
+Password for keyid: 'b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f' is tmp_szXOdJT
+
+Printing loaded key -> []
+Could not load keyid: b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f
+
+THE ROLE IS:  'timestamp'
+Password for keyid: 'b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f' is tmp_szXOdJT
+
+Printing loaded key -> []
+Could not load keyid: b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f
+
+THE ROLE IS:  'timestamp'
+Password for keyid: 'b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f' is tmp_szXOdJT
+
+Printing loaded key -> []
+Could not load keyid: b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f
+IN _get_role_config!!!
+['b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f']
+[]
+
+THE ROLE IS:  'release'
+Password for keyid: '04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944' is tmp_NeuwAzK
+
+Printing loaded key -> None
+Could not load keyid: 04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944
+
+THE ROLE IS:  'release'
+Password for keyid: '04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944' is tmp_NeuwAzK
+
+Printing loaded key -> None
+Could not load keyid: 04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944
+
+THE ROLE IS:  'release'
+Password for keyid: '04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944' is tmp_NeuwAzK
+
+Printing loaded key -> None
+Could not load keyid: 04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944
+IN _get_role_config!!!
+['04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944']
+[]
+
+THE ROLE IS:  'release'
+Password for keyid: '04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944' is tmp_NeuwAzK
+
+THE ROLE IS:  'timestamp'
+Password for keyid: 'b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f' is tmp_OmYqoCl
+
+THE ROLE IS:  'root'
+Password for keyid: '84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918' is tmp_zkcVjOV
+
+THE ROLE IS:  'targets'
+Password for keyid: 'de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb' is tmp_ZFaWukc
+
+THE ROLE IS:  'release'
+Password for keyid: '04aeceb9b1e106b02fa84a1c30f8dcda3c99d17f9ebb632c333d20130d139944' is tmp_NeuwAzK
+
+THE ROLE IS:  'timestamp'
+Password for keyid: 'b12829a9cbd77a1aab6ea5e7202de3becf0bf9877614db2c6690e5c847738b6f' is tmp_OmYqoCl
+
+THE ROLE IS:  'root'
+Password for keyid: '84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918' is tmp_kSNDNaL
+
+THE ROLE IS:  'root'
+Password for keyid: '84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918' is tmp_kSNDNaL
+
+THE ROLE IS:  'root'
+Password for keyid: '84a37fff50bf158bfe792774632c11dc040a2aa782bf6ed14092ed4d26e42918' is tmp_kSNDNaL
+
+THE ROLE IS:  'targets'
+Password for keyid: 'de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb' is tmp_ZFaWukc
+
+Printing loaded key -> []
+Could not load keyid: de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb
+
+THE ROLE IS:  'targets'
+Password for keyid: 'de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb' is tmp_ZFaWukc
+
+Printing loaded key -> []
+Could not load keyid: de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb
+
+THE ROLE IS:  'targets'
+Password for keyid: 'de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb' is tmp_ZFaWukc
+
+Printing loaded key -> []
+Could not load keyid: de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb
+IN _get_role_config!!!
+['de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb']
+[]
+
+THE ROLE IS:  'targets'
+Password for keyid: 'de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb' is tmp_ZFaWukc
+
+Printing loaded key -> []
+Could not load keyid: de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb
+
+THE ROLE IS:  'targets'
+Password for keyid: 'de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb' is tmp_ZFaWukc
+
+Printing loaded key -> []
+Could not load keyid: de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb
+
+THE ROLE IS:  'targets'
+Password for keyid: 'de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb' is tmp_ZFaWukc
+
+Printing loaded key -> []
+Could not load keyid: de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb
+IN _get_role_config!!!
+['de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb']
+[]
+
+THE ROLE IS:  'targets'
+Password for keyid: 'de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb' is tmp_ZFaWukc
+
+Printing loaded key -> []
+Could not load keyid: de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb
+
+THE ROLE IS:  'targets'
+Password for keyid: 'de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb' is tmp_ZFaWukc
+
+Printing loaded key -> []
+Could not load keyid: de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb
+
+THE ROLE IS:  'targets'
+Password for keyid: 'de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb' is tmp_ZFaWukc
+
+Printing loaded key -> []
+Could not load keyid: de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb
+IN _get_role_config!!!
+['de1fca3455d5026a29c55419576bdd5af3868ef6589c641dad4ace7f817936eb']
+[]

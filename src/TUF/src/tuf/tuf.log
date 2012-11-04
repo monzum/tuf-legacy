@@ -1,0 +1,36 @@
+[2012-10-17 11:44:46,698] [tuf.keystore] [INFO] Saving private key(s) to '/tmp/tmpmeg4MR/server_repository/keystore'
+[2012-10-17 11:44:46,700] [tuf.keystore] [INFO] '/tmp/tmpmeg4MR/server_repository/keystore/c934ffbc8584289e7e61647e34eb466bcc2a05b2e2d32a13b4bac13c66e0522e.key' saved.
+[2012-10-17 11:44:46,702] [tuf.keystore] [INFO] '/tmp/tmpmeg4MR/server_repository/keystore/0a3295f3ffbb5111ef2e448d7e7eb6a320a2f419a51114d2c3ea3f508149796f.key' saved.
+[2012-10-17 11:44:46,705] [tuf.keystore] [INFO] '/tmp/tmpmeg4MR/server_repository/keystore/349a268be40c9a23cdc17f6c15ec162f6a7138e85001d896109cc04459c823c0.key' saved.
+[2012-10-17 11:44:46,706] [tuf.keystore] [INFO] '/tmp/tmpmeg4MR/server_repository/keystore/ff42171bca5cd7bf89735f0f909c08ed989764c72919698a92b3dc3b850a5d66.key' saved.
+[2012-10-17 11:44:46,707] [tuf.keystore] [INFO] '/tmp/tmpmeg4MR/server_repository/keystore/99fd4b4d6a72d1718146133353b97e9c6a395e7351fa14b89c35bc87e7be9be0.key' saved.
+[2012-10-17 11:44:46,708] [tuf.keystore] [INFO] '/tmp/tmpmeg4MR/server_repository/keystore/e1de7f6ee85d5f99311cf0b410c322b8c5e82e4ac1e16e3f8c67079761a2e492.key' saved.
+[2012-10-17 11:44:46,708] [tuf.keystore] [INFO] Done.
+[2012-10-17 11:44:46,710] [tuf.signerlib] [INFO] Signing '/tmp/tmpmeg4MR/server_repository/metadata/root.txt' with 0a3295f3ffbb5111ef2e448d7e7eb6a320a2f419a51114d2c3ea3f508149796f
+[2012-10-17 11:44:46,715] [tuf.signerlib] [INFO] Writing to '/tmp/tmpmeg4MR/server_repository/metadata/root.txt'
+[2012-10-17 11:46:24,358] [tuf.keystore] [INFO] Saving private key(s) to '/tmp/tmp66W_mB/server_repository/keystore'
+[2012-10-17 11:46:24,361] [tuf.keystore] [INFO] '/tmp/tmp66W_mB/server_repository/keystore/fde101b675dcb2f2f2dc374791e8d663cc630112ff3705c9b27ee2affa620ecb.key' saved.
+[2012-10-17 11:46:24,362] [tuf.keystore] [INFO] '/tmp/tmp66W_mB/server_repository/keystore/39a9727fc0a49badac73ed64fa6f61059d634869040277f7dd4836162ff0514e.key' saved.
+[2012-10-17 11:46:24,363] [tuf.keystore] [INFO] '/tmp/tmp66W_mB/server_repository/keystore/a53882cd612d5b28a6ee1a99e1a56a036dee027733f0f639362721f9b017def6.key' saved.
+[2012-10-17 11:46:24,364] [tuf.keystore] [INFO] '/tmp/tmp66W_mB/server_repository/keystore/072e6023bbdd2ffd6e26f87fd20098e208db433e9c17a5db4588220c80ec9446.key' saved.
+[2012-10-17 11:46:24,366] [tuf.keystore] [INFO] '/tmp/tmp66W_mB/server_repository/keystore/fa60431414f41a61d5a8b28ef4d5a38e608a0dd8014269369c1173e554446dca.key' saved.
+[2012-10-17 11:46:24,367] [tuf.keystore] [INFO] '/tmp/tmp66W_mB/server_repository/keystore/532f5658659390b85ddfffd379d54ae6d51d39eec1dc29ea00c78c4ad757b7d3.key' saved.
+[2012-10-17 11:46:24,367] [tuf.keystore] [INFO] Done.
+[2012-10-17 11:46:24,369] [tuf.signerlib] [INFO] Signing '/tmp/tmp66W_mB/server_repository/metadata/root.txt' with a53882cd612d5b28a6ee1a99e1a56a036dee027733f0f639362721f9b017def6
+[2012-10-17 11:46:24,375] [tuf.signerlib] [INFO] Writing to '/tmp/tmp66W_mB/server_repository/metadata/root.txt'
+[2012-10-17 14:37:00,307] [tuf.keystore] [INFO] Saving private key(s) to '/tmp/tmp_bHufR/server_repository/keystore'
+[2012-10-17 14:37:00,308] [tuf.keystore] [INFO] '/tmp/tmp_bHufR/server_repository/keystore/239c99a3b8a41cac20c3a3a7ef86e87aa0e1c3ae1367c8c612ed188e92f6f8db.key' saved.
+[2012-10-17 14:37:00,309] [tuf.keystore] [INFO] '/tmp/tmp_bHufR/server_repository/keystore/dc6b551eeb9bfa775d097273f7095613613b92c06a797e1cd85d25d7f999c380.key' saved.
+[2012-10-17 14:37:00,310] [tuf.keystore] [INFO] '/tmp/tmp_bHufR/server_repository/keystore/9d16a8353e6c6ee290eca758e1dc9547409400d7c484d3f0be940e942b88cf39.key' saved.
+[2012-10-17 14:37:00,311] [tuf.keystore] [INFO] '/tmp/tmp_bHufR/server_repository/keystore/f648bfc7f96c13e0f4ddae74371e7fdbf72cf2c96acba03790cb6d2bf52ff7e5.key' saved.
+[2012-10-17 14:37:00,313] [tuf.keystore] [INFO] '/tmp/tmp_bHufR/server_repository/keystore/3bd963ed0c1ee3311b1289f0c3b3eb8813b4094ff3189d2bf689365d91eb902c.key' saved.
+[2012-10-17 14:37:00,314] [tuf.keystore] [INFO] '/tmp/tmp_bHufR/server_repository/keystore/47524e6909c1e00c10413163a42cba6731060d6b3d20c11dfc1d9bb5346a3a4b.key' saved.
+[2012-10-17 14:37:00,314] [tuf.keystore] [INFO] Done.
+[2012-10-17 14:37:00,315] [tuf.signerlib] [INFO] Signing '/tmp/tmp_bHufR/server_repository/metadata/root.txt' with 9d16a8353e6c6ee290eca758e1dc9547409400d7c484d3f0be940e942b88cf39
+[2012-10-17 14:37:00,321] [tuf.signerlib] [INFO] Writing to '/tmp/tmp_bHufR/server_repository/metadata/root.txt'
+[2012-10-17 14:37:00,322] [tuf.signerlib] [INFO] Signing '/tmp/tmp_bHufR/server_repository/metadata/targets.txt' with 47524e6909c1e00c10413163a42cba6731060d6b3d20c11dfc1d9bb5346a3a4b
+[2012-10-17 14:37:00,329] [tuf.signerlib] [INFO] Writing to '/tmp/tmp_bHufR/server_repository/metadata/targets.txt'
+[2012-10-17 14:37:00,331] [tuf.signerlib] [INFO] Signing '/tmp/tmp_bHufR/server_repository/metadata/release.txt' with 239c99a3b8a41cac20c3a3a7ef86e87aa0e1c3ae1367c8c612ed188e92f6f8db
+[2012-10-17 14:37:00,340] [tuf.signerlib] [INFO] Writing to '/tmp/tmp_bHufR/server_repository/metadata/release.txt'
+[2012-10-17 14:37:00,341] [tuf.signerlib] [INFO] Signing '/tmp/tmp_bHufR/server_repository/metadata/timestamp.txt' with 3bd963ed0c1ee3311b1289f0c3b3eb8813b4094ff3189d2bf689365d91eb902c
+[2012-10-17 14:37:00,346] [tuf.signerlib] [INFO] Writing to '/tmp/tmp_bHufR/server_repository/metadata/timestamp.txt'
