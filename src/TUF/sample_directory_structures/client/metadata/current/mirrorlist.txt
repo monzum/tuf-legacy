@@ -1,0 +1,43 @@
+{
+ "signatures": [
+  {
+   "keyid": "9f4b647910c2e7140334446f5488b05798ad3067d5fae046be670283f382fc9f", 
+   "method": "evp", 
+   "sig": "5e3a5cd8eb726c3269a889c17324dfed096f2081a25adbdf71cdcd99a259a47ad94211091bf6ffe55b882820a39ccc42f563f93eded9415e322fea4d183ce385cfa8c4c13fed93615e556fb2e8ba67cb5da2b9bc1a7898d0b3d4139a76eb6247c1f59d7bbcdbbb5b55eebe0b99f0a178c937caaca36e4fb045a0f2e09a95da8aeabb7b34897aea2590857ff783ee7faec523dbc83abba39d87b80430cdaf4f9acdebcce1054f27cdef8c450181d9213af6cdfcb9539bd4388a105e9870b324a239525e6287626b3cda49544f5d0416f46ee960d37562de9ed01e513866067cfad33a9599dd2a915d6a981880a8a89badc4fd2e02ac99cdb059fd46bc6c6cb64f928af1378ca97b488901c515db0bcf3fa2ac4f42385e7e63593101e0dbf21074c415a099ff0505f01affb1e2b54310e78359be5a01beaf6b6e2c858bb8b7639bf81b15972cd4cd2e9d7444ec218e517b2cd56955a7e2d4347b987a4aefbc629847cdc7fbbfd6c44d6bcdbc99910528c4b6fde5f31ecd84ffde9a9e4660c29d74"
+  }
+ ], 
+ "signed": {
+  "_type": "Mirrors", 
+  "expires": "2013-11-05 13:09:39", 
+  "mirrors": [
+   {
+    "confined_target_paths": [
+     "targets/target1.py", 
+     "targets/target2.py"
+    ], 
+    "metadata_path": "metadata", 
+    "targets_path": "targets", 
+    "url_prefix": "http://mirror1.com"
+   }, 
+   {
+    "confined_target_paths": [
+     "targets/target3.py", 
+     "targets/target4.py"
+    ], 
+    "metadata_path": "metadata", 
+    "targets_path": "targets", 
+    "url_prefix": "http://mirror2.com"
+   }, 
+   {
+    "confined_target_paths": [
+     "targets/target1.py", 
+     "targets/target2.py"
+    ], 
+    "metadata_path": "metadata", 
+    "targets_path": "targets", 
+    "url_prefix": "http://mirror3.com"
+   }
+  ], 
+  "ts": "2012-11-05 13:09:39"
+ }
+}

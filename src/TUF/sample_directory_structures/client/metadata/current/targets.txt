@@ -1,0 +1,40 @@
+{
+ "signatures": [
+  {
+   "keyid": "4aa37f6d49d4a416b841fc645fedc2eb83cb94e50d70ba68ab12493826c5ab8d", 
+   "method": "evp", 
+   "sig": "6be8147a5da5737beeb411e544ce7b62a0fa8da0fe998e4a5f2d5675d0e2f1b5a18c5c0ed770c2cb95d98ae919dc223dc6b8f661913399afc9e299c34e73003bc0926199230b0216c05a3e1ac6d3fdbdd2293360198bcd6e240f1f28c8d9fcfb7f348832bce1b669576fe9904c19b72340e127b40bbf978edacd13b19bcc5e1cea7e8e14210eb2dae6e25a450898096d71e5f269887e4337fb7c0ed112f31aeb65fe395464e40c4a64f46bd6d4df08f1247c471fcde7623b658ae04b570483e9f2d42e9e97f7878420526cf5c2fa3b60430fbd0160aa3da10fbd4e9952c1d536ed405936075bfbcdd385e9b2774b8fdfad83941795d6ddfccff750dd142263ba194341fed3902566b7e2efe8f454cba4383c0fa4f5eda5f6e3a9c0969d846d3b236c109b813a1b68afd917ef044d5b80e3a245cf2c48c71f2a4d94d9598b381b3ceae21f068f73cde60f020fdd0794244eee8f15176f20cd5d05f986ae3f5f5dcd54b0ff85c4fce6805ff4da5785650e7a0eae081484dc966dcc0353fa0e42f3"
+  }
+ ], 
+ "signed": {
+  "_type": "Targets", 
+  "expires": "2013-11-05 13:09:35", 
+  "targets": {
+   "delegated_level1/delegated_level2/tmp_file_TestQuickstart_IbtNyJ.txt": {
+    "hashes": {
+     "sha256": "7aa08f35485871572b09210ee43ae492ff2d31206db9a201dfa9df09bf5d364b"
+    }, 
+    "length": 12
+   }, 
+   "delegated_level1/tmp_file_TestQuickstart_xnOWLk.txt": {
+    "hashes": {
+     "sha256": "7aa08f35485871572b09210ee43ae492ff2d31206db9a201dfa9df09bf5d364b"
+    }, 
+    "length": 12
+   }, 
+   "tmp_file_TestQuickstart_gNZIou.txt": {
+    "hashes": {
+     "sha256": "7aa08f35485871572b09210ee43ae492ff2d31206db9a201dfa9df09bf5d364b"
+    }, 
+    "length": 12
+   }, 
+   "tmp_file_TestQuickstart_kjprLy.txt": {
+    "hashes": {
+     "sha256": "7aa08f35485871572b09210ee43ae492ff2d31206db9a201dfa9df09bf5d364b"
+    }, 
+    "length": 12
+   }
+  }, 
+  "ts": "2012-11-05 13:09:35"
+ }
+}
