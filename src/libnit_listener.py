@@ -300,7 +300,7 @@ class LibnitListener():
         return process_method(sock_fd)
     except Exception, err:
       if self.debug_mode:
-        print "Got a bad error: " + str(traceback.format_exc)
+        print "Got a bad error: " + str(traceback.format_exc())
           
       return (0, ECONNRESET)
 
