@@ -17,11 +17,18 @@
 """
 
 
+import os
+import sys
 
-#imports
-#import tuf
-#from tuf import updater
+sys.path.append("TUF/src/")
+
+import tuf
+from  tuf.client import updater
+from tuf import mirrorlist
+
 from network_call_processor import NetworkCallProcessor
+
+
 class TUFTranslator(NetworkCallProcessor):
  """
  <Purpose>
@@ -46,6 +53,8 @@ class TUFTranslator(NetworkCallProcessor):
    These network calls are forwarded through the translator between software updater and server
 
  <Methods>
+  is_mirror():
+   Return 1 if a socket is opened for a TUF mirror. Otherwise, return 0
   call_socket():
    When a socket is creation is requested, this function checks the domain family, socket and
    and protocol types. If socket creation is for a network call, socket information is added to 
@@ -79,6 +88,8 @@ class TUFTranslator(NetworkCallProcessor):
 	<Return>
 	 None
 	"""
+ 		
+
 	#init parent class
 	NetworkCallProcessor.__init__(self)		
 	
@@ -86,7 +97,9 @@ class TUFTranslator(NetworkCallProcessor):
 	self.sock_id = 1024
 	
 	#initialize tuf client
-	#self.tuf_client_repo = updater.Repository("tuf_client")
+	
+	tuf.conf.repository_directory = "TUF/sample_directory_structures/client"
+	self.tuf_client_repo = updater.Repository("tuf_client",mirrorlist.get_mirror_list())
 	
 	#return mirror list from tuf client repo
 	#self.mirror_list = self.tuf_client_repo.get_mirror_list()
@@ -97,6 +110,22 @@ class TUFTranslator(NetworkCallProcessor):
 	#dict of network calls not made to mirrors
 	self.misc_network_calls = {}
 
+
+ def is_mirror(ai_addr)
+	"""
+	 <Purpose>
+	  Helper function to determine if addr is in  mirrorlist
+	 <Arguments>
+	  ai_addr:
+		url:port parameters of socket.connect() request
+	<Return>
+		1 if ai_addr is a mirror. 0 otherwise
+	"""
+	for mirror_id in self.mirror_list:
+		if self.mirror_list[mirror_id]['url_prefix'] == ai_addr:
+			return 1
+	return 0
+	
  def call_socket(self,domain,socket_type):
 	"""
 	 <Purpose>
@@ -133,7 +162,7 @@ class TUFTranslator(NetworkCallProcessor):
 	return self.sock_id
 	
 	 
- def call_connect(self,sock_descript, ip, port):	
+ def call_connect(self,sock_descript, addr, port):	
 	"""
 	  <Purpose>
 	   Verify entity at other end of network call. Check if ip is not in mirror lit. 
@@ -143,8 +172,8 @@ class TUFTranslator(NetworkCallProcessor):
 	 <Arguments>
 	  sock_descript:
 	   socket file descriptor id (obtained from call_sock function)
-	  ip:
- 	   server ip address
+	  addr:
+ 	   server url 
 	  port:
 	   entry port
 	
@@ -159,9 +188,9 @@ class TUFTranslator(NetworkCallProcessor):
 
  	#if ip_port is in mirror, store mirror info to network_call dict
 	"""
-	ip_port = str(ip) +':'str(port)
-	if self.tuf_client_repo.is_mirror_ip(ip_port):
-		self.network_calls[str_sock_id]['ip'] = ip
+	ai_addr = url + ':'str(port)
+	if self.is_mirror(ai_addr):
+		self.network_calls[str_sock_id]['addr'] = addr
 		self.network_calls[str_sock_id]['port'] = port
 		return 0
 	else:
@@ -175,9 +204,9 @@ class TUFTranslator(NetworkCallProcessor):
 			sock_obj = socket.socket(self.network_calls[str_sock_id]['domain'],
 					 self.network_calls[str_sock_id]['sock_type'])
 			self.misc_network_calls[str_sock_id] = {}
-			sock_obj.connect((str(ip),port))	
+			sock_obj.connect((addr,ip))	
 			self.misc_network_calls[str_sock_id]['sock_obj] = sock_obj
-			self.misc_network_calls[str_sock_id]['ip'] = ip
+			self.misc_network_calls[str_sock_id]['addr'] = addr
 			self.misc_network_calls[str_sock_id]['port'] = port
 			return 0
 		except socket.error,msg:
@@ -217,9 +246,14 @@ class TUFTranslator(NetworkCallProcessor):
 			return -1
 	#handle mirror requests
 	else:
-		#parse msg to get file to be updated
-		#add file to download to network_calls
+		#split request into its components
+		#[method][request-uri][protocol]
+		request_components = msg.split()
+		if len(request_components[1]) == 0 or len(request_components[1]) == '/':
+			return -1 
+		self.network_calls[str_sock_id]['update_file']=request_components[1]	
 		return len(msg)
+
  def call_recv(self, sock_descript,buff_size,flags=0):
 	"""
 	 <Purpose>
@@ -282,4 +316,18 @@ class TUFTranslator(NetworkCallProcessor):
 	if len(self.network_calls) == 0:
 		self.sock_id = 1024
 	
-	return sock_close	
+	return sock_close
+
+
+
+#small testing stuff
+def main():
+	testing = TUFTranslator()
+
+if __name__ == "__main__":
+	main()
+def main():
+	testing = TUFTranslator()
+
+if __name__ == "__main__":
+	main()
