@@ -19,12 +19,14 @@
 
 /* Define some global variables. */
 int RECV_SIZE = 2048;
+int ERRBADFD = 9;
 
 /* A dictionary that keeps track of translation from proxy fd
  * to repy fd. 
  */
 int MAX_SOCK_FD = 1024;
 int socket_fd_dict[1024];
+
 
 
 /* A structure for storing network function name
@@ -94,6 +96,7 @@ int (*libc_accept)(int, struct sockaddr*, socklen_t*);
 int (*libc_bind)(int, const struct sockaddr*, socklen_t);
 int (*libc_connect)(int, const struct sockaddr*, socklen_t);
 int (*libc_setsockopt)(int, int, int, const void*, socklen_t);
+int (*libc_close)(int);
 int (*libc_shutdown)(int, int);
 ssize_t (*libc_send)(int, const void*, size_t, int);
 ssize_t (*libc_recv)(int, void*, size_t, int); 
@@ -193,6 +196,7 @@ int init_master_sock()
     *(void **)(&libc_bind) = dlsym(RTLD_NEXT, "bind");
     *(void **)(&libc_connect) = dlsym(RTLD_NEXT, "connect");
     *(void **)(&libc_setsockopt) = dlsym(RTLD_NEXT, "setsockopt");
+    *(void **)(&libc_close) = dlsym(RTLD_NEXT, "close");
     *(void **)(&libc_shutdown) = dlsym(RTLD_NEXT, "shutdown");
     *(void **)(&libc_send) = dlsym(RTLD_NEXT, "send");
     *(void **)(&libc_recv) = dlsym(RTLD_NEXT, "recv");
@@ -242,9 +246,6 @@ int init_master_sock()
 
 int socket(int domain, int type, int protocol)
 {
-  printf("Got here");
-  fflush(stdout);
-
   /* Initialize everything and create the master socket */
   int sockfd = init_master_sock();
 
@@ -381,7 +382,7 @@ int connect(int sockfd, const struct sockaddr *address, socklen_t address_len)
 
   // Send the info to the Repy proxy server
   forward_api_to_proxy(sockfd, "connect", arg_list, recv_buf, &err_val);
-
+  
   if (err_val < 0){
     return atoi(recv_buf);
   }
@@ -972,7 +973,9 @@ int select(int nfds, fd_set *readfds, fd_set *writefds,
 //  // Send the info to the Repy proxy server
 //  forward_api_to_proxy(sockfd, "close", arg_list, recv_buf, &err_val);
 //
-//  if (err_val < 0)
+//  if (err_val == ERRBADFD)
+//    (*libc_close)(sockfd);
+//  else if (err_val < 0)
 //    return atoi(recv_buf); 
 //  else
 //    return -1;	

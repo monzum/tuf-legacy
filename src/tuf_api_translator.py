@@ -17,11 +17,15 @@
 """
 
 
+import os
+import sys
+import socket
 
-#imports
+#sys.path.append("TUF/src/")
 #import tuf
-#from tuf import updater
 from network_call_processor import NetworkCallProcessor
+
+
 class TUFTranslator(NetworkCallProcessor):
  """
  <Purpose>
@@ -46,6 +50,8 @@ class TUFTranslator(NetworkCallProcessor):
    These network calls are forwarded through the translator between software updater and server
 
  <Methods>
+  is_mirror():
+   Return 1 if a socket is opened for a TUF mirror. Otherwise, return 0
   call_socket():
    When a socket is creation is requested, this function checks the domain family, socket and
    and protocol types. If socket creation is for a network call, socket information is added to 
@@ -68,35 +74,52 @@ class TUFTranslator(NetworkCallProcessor):
    upon socket close() call, this function removes the socket from the update_calls dict 
  """
   
- def __init__(self):
+ def __init__(self, server_ip):
 	"""
 	 <Purpose>
   	   Initiate TUFTranslator that will handle network calls from software updater
 	 
 	<Arguments>
-	   None
-	  
+	   server_ip:
+		ip address of updater server 
 	<Return>
 	 None
 	"""
+ 		
 	#init parent class
 	NetworkCallProcessor.__init__(self)		
 	
 	#socket descriptor id index	
 	self.sock_id = 1024
 	
-	#initialize tuf client
-	#self.tuf_client_repo = updater.Repository("tuf_client")
+	self.server_ip = server_ip
 	
-	#return mirror list from tuf client repo
-	#self.mirror_list = self.tuf_client_repo.get_mirror_list()
-		
+	#get mirror list dict from Konstantin's module
+	#self.mirror_list = tuf.Konst.get_mirror_list()
+	self.mirror_list = {}
+
 	# dict of all network calls	
 	self.network_calls = {}	
 	
 	#dict of network calls not made to mirrors
 	self.misc_network_calls = {}
 
+ def is_mirror(self,ip):
+	"""
+	 <Purpose>
+	  Check if ip is in mirror list dict
+	 <Arguments>
+	  ip_port:
+	 	ip: ip of connect() parameter
+	<Return>
+	   0 if mirror is not in list, 1 if it is
+	"""
+	for mirror_name in self.mirror_list:
+		mirror_url = self.mirror_list[mirror_name]['url_prefix']
+		mirror_ip = socket.gethostbyname(mirror_url)
+		if mirror_ip == ip:
+			return 1
+	return 0	
  def call_socket(self,domain,socket_type):
 	"""
 	 <Purpose>
@@ -110,30 +133,32 @@ class TUFTranslator(NetworkCallProcessor):
 	 socket_type:
 	    communication semantics
 	 protocol:
-       <Return>
-	 socket file descriptor id	   	
+       <Return> 
+	 (socket_descript_id, -1) on success
+	(None, socket_errno) on failure	   	
 	""" 
 	if domain <0:
-		print ("Invalid socket domain !")
-		return -1 
-		#exit("Invalid socket domain !")
-	
+		return (None, 97)
+	if socket_type <0: 
+		return (None, 22)
+		
+			
 	self.sock_id+=1
-	#add new socket creation request to network call list
+
 	if self.network_calls.get(str(self.sock_id)):
-		return -1 
+		return (None, 13) 
 	
 	#create dict for socket descriptor id self.sock_id
 	str_sock_id = str(self.sock_id)
 	self.network_calls[str_sock_id] ={}
 	self.network_calls[str_sock_id]['domain'] = domain
 	self.network_calls[str_sock_id]['sock_type'] = socket_type
-		
+	
 	#return (simulated) socket file descriptor id to interposition 
-	return self.sock_id
+	return (self.sock_id,-1)
 	
 	 
- def call_connect(self,sock_descript, ip, port):	
+ def call_connect(self,sock_descript, addr, port):	
 	"""
 	  <Purpose>
 	   Verify entity at other end of network call. Check if ip is not in mirror lit. 
@@ -143,47 +168,52 @@ class TUFTranslator(NetworkCallProcessor):
 	 <Arguments>
 	  sock_descript:
 	   socket file descriptor id (obtained from call_sock function)
-	  ip:
- 	   server ip address
+	  addr:
+ 	    server ip address 
 	  port:
 	   entry port
 	
 	<Return>
-	  if socket was not created or connect() failed for non mirror network call, we return error 
-	   message. Otherwise, return 0 
+	 (0, -1) on success
+	(None, socket_errno) on failure
 	"""
 	str_sock_id = str(sock_descript)
 	#socket file descriptor is not in dict
 	if not self.network_calls.get(str_sock_id):
-		return -1	
-
- 	#if ip_port is in mirror, store mirror info to network_call dict
-	"""
-	ip_port = str(ip) +':'str(port)
-	if self.tuf_client_repo.is_mirror_ip(ip_port):
-		self.network_calls[str_sock_id]['ip'] = ip
+		print self.network_calls
+		print str_sock_id
+		return (None,9)	
+	
+	ai_addr = addr + ':'+str(port)
+	
+	#check mirror list for ai_addr
+	#self.mirror_list = tuf.Konst.get_mirror_list()
+	mirror = self.is_mirror(addr)
+	
+	if mirror:	
+		self.network_calls[str_sock_id]['addr'] = addr
 		self.network_calls[str_sock_id]['port'] = port
-		return 0
+		return (0,-1)
 	else:
-		#create socket for non-mirror network access and add to misc_network_calls dict
-		#if self.misc_network_calls.get(str_sock_id):
-			#return -1 
-		#TODO: Handle 2 cases:
-			# 1. When socket cannot be created, remove from dict
-			# 2. When socket is created, but cannot connect, keep in dict
+			
 		try:
 			sock_obj = socket.socket(self.network_calls[str_sock_id]['domain'],
 					 self.network_calls[str_sock_id]['sock_type'])
 			self.misc_network_calls[str_sock_id] = {}
-			sock_obj.connect((str(ip),port))	
-			self.misc_network_calls[str_sock_id]['sock_obj] = sock_obj
-			self.misc_network_calls[str_sock_id]['ip'] = ip
+			sock_obj.connect((addr,port))	
+			self.misc_network_calls[str_sock_id]['sock_obj'] = sock_obj
+			self.misc_network_calls[str_sock_id]['addr'] = addr
 			self.misc_network_calls[str_sock_id]['port'] = port
-			return 0
+			
+			#if ip is of server, update
+			# call Konstatntin's update function			
+			# can server also work as mirror? if so, put this outside
+			if addr == self.server_ip:
+				print("try and except konstantin's update_mirror func")	
+			return (0,-1)
 		except socket.error,msg:
-			print "Socket Error: " + str(msg[0]) +': '+ msg[1]
-			return msg[1] #return error message	
- 	"""
+			return (None, msg[0])
+	
  def  call_send(self, sock_descript,msg,flags=0):
 	"""
 	 <Purpose>
@@ -201,25 +231,30 @@ class TUFTranslator(NetworkCallProcessor):
            flags for processing and recv
 	
         <Return>
-	  return value of socket().send() if called or size of msg
+	 (len(msg, -1) on success
+	 (None, errno) on failure 
 	"""
 	str_sock_id = str(sock_descript)
 	if not self.network_calls.get(str_sock_id):
-		return -1
+		return (None, 9)
 	
 	#if socket descriptor is for misc_call, send message
-	if self.misc_calls.get(str_sock_id):
+	if self.misc_network_calls.get(str_sock_id):
 		try:
-			size = self.misc_calls[str_sock_id]['sock_obj'].send(msg,flags)
-			return size
+			size = self.misc_network_calls[str_sock_id]['sock_obj'].send(msg,flags)
+			return (size, -1)
 		except socket.error,msg:
-			print "Socket creation failed. Error code: " + str(msg[0]) +': '+ msg[1]
-			return -1
-	#handle mirror requests
+			return (None, msg[0])
 	else:
-		#parse msg to get file to be updated
-		#add file to download to network_calls
-		return len(msg)
+		#split request into its components
+		#[method][request-uri][protocol]
+		request_components = msg.split()
+		if len(request_components[1]) == 0 or len(request_components[1]) == '/':
+			return (None,22) 
+		self.network_calls[str_sock_id]['update_file']=request_components[1]	
+		return (len(msg),-1)
+
+
  def call_recv(self, sock_descript,buff_size,flags=0):
 	"""
 	 <Purpose>
@@ -240,16 +275,19 @@ class TUFTranslator(NetworkCallProcessor):
 	 contents of socket.recv() or tuf download mechanism
 	"""
 	str_sock_id = str(sock_descript)
-	if self.misc_calls.get(str_sock_id):
+	if not self.network_calls.get(str_sock_id):
+		return (None, 9)
+	
+	if self.misc_network_calls.get(str_sock_id):
 		try:
-			recv_buf = self.misc_calls[str_sock_id]["sock_obj"].recv(buff_size,flags)
-			return rcv_buf
+			recv_buf = self.misc_network_calls[str_sock_id]["sock_obj"].recv(buff_size,flags)
+			return (recv_buf,-1)
 		except socket.error, msg:
-			print "Could not receive from server. Error code: "+ str(msg[0])+': '+msg[1]
-			return -1
+			return (None, msg[0])
+			
 	else:
-		#TODO:call download method from client
-		#return downloaded file path/contents
+		print ("Try/Except konstantin's update targets function")	
+		#return (filecontents,-1) or (None, error_msg)
 		return 0	
 
  def call_close(self, sock_descript):
@@ -264,22 +302,40 @@ class TUFTranslator(NetworkCallProcessor):
            socket file descriptor
 	
 	<Return>
-         0 if sock_descript was not in misc_network_calls; otherwise, use return value of 
-	 <sock_descript>.close() 
+       	 (0,-1) if socket was sucesfully close (None, errno) otherwise
 	"""
 	str_sock_id = str(sock_descript)
-	sock_close = 0 
-	if self.misc_call.get(str_sock_id):
+	sock_close = -1 
+	
+	if not self.network_calls.get(str_sock_id):
+		return (None, 9)
+
+	if self.misc_network_calls.get(str_sock_id):
 		try:
-			sock_close = self.misc_calls[str_sock_id]["sock_obj"].close()
-			del self.misc_call[str_sock_id]
+			sock_close = self.misc_network_calls[str_sock_id]["sock_obj"].close()
+			del self.misc_network_calls[str_sock_id]
 			del self.network_calls[str_sock_id]
 		except socket.error, msg:
-			print "Coould not close socket. Error code "+str(msg[0])+': '+msg[1]
+			return (None, sock_close)
 	else:
 		del self.network_calls[str_sock_id]
 	
-	if len(self.network_calls) == 0:
+	if len(self.network_calls) == 0 and len(self.misc_network_calls) == 0:
 		self.sock_id = 1024
 	
-	return sock_close	
+	return (0,sock_close)
+		
+
+"""
+#small testing stuff
+def main():
+	testing = TUFTranslator("127.1.100")
+	ret = testing.call_socket(socket.AF_INET,socket.SOCK_STREAM)
+	ret2 = testing.call_connect(ret[0],"www.google.com",80)
+	ret3 = testing.call_send(ret[0],"Hello")
+	ret4 = testing.call_recv(ret[0],1024)
+	
+	print ret4
+if __name__ == "__main__":
+	main()
+""""
