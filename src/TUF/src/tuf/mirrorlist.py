@@ -34,6 +34,7 @@
 """
 
 import os
+import shutil
 import logging
 
 
@@ -376,8 +377,8 @@ def update_mirrorlist(url, metadata_directory):
     legger.warn('Mirrorlist metadata file download failed.')
     return
 
-  mirrorlist_signable = tuf.util.load_json_string(mirrorlist_tempfileobj) 
-  tuf.formats.check_signable_object_format(metadata_signable)
+  mirrorlist_signable = tuf.util.load_json_string(mirrorlist_tempfileobj.read()) 
+  tuf.formats.check_signable_object_format(mirrorlist_signable)
 
   # In order to verify 'mirrorlist_signable' signature, the roledb
   # dictionary 'roledb_dict' has to have mirrorlist role info loaded.
@@ -386,17 +387,16 @@ def update_mirrorlist(url, metadata_directory):
   
   root_signable = tuf.util.load_json_file(root_filepath)
 
-
-  signatures_field = mirrorlist_signable['signature']['keyids']
+  keyid = mirrorlist_signable['signatures'][0]['keyid']
   mirrorlist_roleinfo = {}
-  mirrorlist_roleinfo['keyids'] = signatures_field['keyids']
+  mirrorlist_roleinfo['keyids'] = [keyid]
   mirrorlist_roleinfo['threshold'] = 1
 
-  tur.roledb.add_role('mirrorlist', mirrorlist_roleinfo, require_parent=False)
+  tuf.roledb.add_role('mirrorlist', mirrorlist_roleinfo, require_parent=False)
 
   # Verify 'mirrorlist_signable' signature.
   try:
-    sig_verify = tuf.sig.verify(mirrrorlist_signable, 'mirrorlist')
+    sig_verify = tuf.sig.verify(mirrorlist_signable, 'mirrorlist')
   except (tuf.UnknownRoleError, tuf.FormatError, tuf.Error), e:
     message = 'Unable to verify mirrorlist signature:'+str(e)
     logger.warn(message)
@@ -409,17 +409,7 @@ def update_mirrorlist(url, metadata_directory):
 
   mirrorlist_tempfileobj.move(mirrorlist_current_filepath)
 
-
-
-
-
-
-
-
-
-
-
-
+  
 
 
 

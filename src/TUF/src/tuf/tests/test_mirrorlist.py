@@ -14,6 +14,7 @@
 """
 
 import os
+import shutil
 import tempfile
 import quickstart
 import tuf.formats
@@ -105,10 +106,33 @@ class TestMirrorlist(tuf.tests.unittest_toolbox.Modified_TestCase):
     os.path.exists(os.path.join(meta_dir, 'mirrorlist.txt'))
 
 
-  def test_4_update_mirrorlist(self):
-    # SETUP
 
-    #  Create the project directories.
+
+  def mock_download_file(self, file_path):
+    """
+    <Purpose>
+      Pathch 'tuf.download.download_url_to_fileobject' method.
+      
+    <Arguments>
+      file_path:
+        Path to a file that will be returned as a tuf.util.TempFile
+        fileobject.
+
+    """
+
+    def _mock_download_url_to_tempfileobj(url):
+      file_obj = open(file_path, 'rb')
+      temp_fileobj = tuf.util.TempFile()
+      temp_fileobj.write(file_obj.read())
+      return temp_fileobj
+
+    # Patch tuf.download.download_url_to_tempfileobj().
+    tuf.download.download_url_to_tempfileobj = \
+    _mock_download_url_to_tempfileobj
+
+
+
+  def setup_repositories(self):
     proj_files = self.make_temp_directory_with_data_files()
     proj_dir = os.path.join(proj_files[0], 'targets')
 
@@ -138,14 +162,60 @@ class TestMirrorlist(tuf.tests.unittest_toolbox.Modified_TestCase):
     quickstart._get_password = _mock_prompt
 
     quickstart.build_repository(proj_dir)
+
+
+
+
+
+  def test_4_update_mirrorlist(self):
+    # SETUP
+    self.setup_repositories()
+
     cwd_dir = os.getcwd()
-    print os.listdir(cwd_dir)
     
-    # TODO finish this test!!!
+    meta_dir = os.path.join(cwd_dir, 'client', 'metadata')
+    current_dir = os.path.join(meta_dir, 'current') 
+    previous_dir = os.path.join(meta_dir, 'previous') 
+   
+    new_mirrorlist_filepath = os.path.join(current_dir, 'mirrorlist.txt') 
+
+    # Patch tuf.download.download_url_to_tempfileobj function.
+    self.mock_download_file(new_mirrorlist_filepath)
+
+    tuf.mirrorlist.update_mirrorlist('junk', meta_dir)
+    
+    shutil.rmtree(os.path.join(cwd_dir, 'client'))
+    shutil.rmtree(os.path.join(cwd_dir, 'repository'))
+    shutil.rmtree(os.path.join(cwd_dir, 'keystore'))
+    
 
 
 
-# RUN UNIT TESTS.
+
+
+  def test_load_mirrorlist_from_file(self):
+    self.setup_repositories()
+    cwd_dir = os.getcwd()
+    meta_dir = os.path.join(cwd_dir, 'client', 'metadata')
+    current_dir = os.path.join(meta_dir, 'current')
+    mirrorlist_filepath = os.path.join(current_dir, 'mirrorlist.txt') 
+    mirrors_dict = tuf.mirrorlist.load_mirrorlist_from_file(mirrorlist_filepath)
+    #self.assertTrue(isinstance(mirrors_dict, dict))
+    print mirrors_dict   
+
+    shutil.rmtree(os.path.join(cwd_dir, 'client'))
+    shutil.rmtree(os.path.join(cwd_dir, 'repository'))
+    shutil.rmtree(os.path.join(cwd_dir, 'keystore'))
+
+
+
+
+
+
+
+
+
+
 test_loader = tuf.tests.unittest_toolbox.unittest.TestLoader
 suite = test_loader().loadTestsFromTestCase(TestMirrorlist)
 tuf.tests.unittest_toolbox.unittest.TextTestRunner(verbosity=2).run(suite)

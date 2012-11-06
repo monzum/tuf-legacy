@@ -5,11 +5,9 @@ import logging
 import tuf.mirrorlist
 import tuf.client.updater
 
-# Uncomment the line below to enable the printing of debugging information.
 #tuf.log.set_log_level(logging.DEBUG)
 
-# Set the local repository directory containing all of the metadata files.
-tuf.conf.repository_directory = './local-repository'
+# Make sure tuf.conf contains correct repository location.
 
 def get_mirrors(metadata_dir):
   current_dir = os.path.join(metadata_dir, 'current')
@@ -18,20 +16,16 @@ def get_mirrors(metadata_dir):
   return tuf.mirrorlist.mirrors_dict
 
 
-def update_mirrorlist():
+def update_mirrorlist(url, metadata_dir):
   tuf.mirrorlist.update_mirrorlist(url, metadata_dir)
 
 
 # Set the repository mirrors.  This dictionary is needed by the repository
 # class of updater.py.
-repository_mirrors = {'mirror1': {'url_prefix': 'http://localhost:8001',
-                                  'metadata_path': 'metadata',
-                                  'targets_path': 'targets',
-                                  'confined_target_paths': ['']}}
-
 repository_mirrors = get_mirrors(mirrorlist_filepath)
 
-def update(repository_mirrors)
+
+def perform_an_update():  
   # Create the repository object using the repository name 'repository'
   # and the repository mirrors defined above.
   repository = tuf.client.updater.Repository('repository', repository_mirrors)
