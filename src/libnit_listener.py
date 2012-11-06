@@ -59,6 +59,11 @@ import socket
 import struct
 
 
+# Define some global values and errorcodes.
+ECONNRESET = 104
+EBADF = 9
+
+
 class LibnitListener():
   # LibnitListener is a module that is used to listen and process
   # network calls that is forwarded by libnit which is interposing
@@ -89,9 +94,6 @@ class LibnitListener():
 
 
 
-
-
-
   def serve_forever(self):
     """
     <Purpose>
@@ -117,7 +119,7 @@ class LibnitListener():
     libnit_sock.listen(1)
 
     print "Starting to listen on port '%d' for Libnit connections." % self.libnit_port
-    libnit_conn = libnit_sock.accept()
+    (libnit_conn, libnit_addr) = libnit_sock.accept()
     
     
     # Continuously serve all the incoming network call requests.
@@ -125,16 +127,66 @@ class LibnitListener():
       # Receive the incoming request.
       request = libnit_conn.recv(4096)
 
+      if not request:
+        continue
+
       print "Received request: '%s'" % request
       # Unwrap the request that the application made.
       network_call_type, call_args = self.deserialize_network_call(request)
-      print network_call_type, call_args
+    
+      try:
+        return_response, return_err = self.make_network_request(network_call_type, call_args)
+      except Exception, err:
+        print "Got a bad error: " + str(err)
+        # If there is any error at all then we just send back
+        # the ECONNRESET errorcode.
+        return_response = ""
+        return_err = ECONNRESET
+        
+      # Now that we have processed the network call, we are going to serialize
+      # the response and error codes from the call then return it back to libnit.
+      serialized_response = self.serialize_network_call_response(return_response, return_err)
+      print "Returning response: " + serialized_response
+
+      bytes_sent = libnit_conn.send(serialized_response)
+    
+  
+
+
+
+  def serialize_network_call_response(self, return_response, return_err):
+    """
+    <Purpose>
+      In order to return the response and the error codes of the network
+      call to Libnit, we will serialize the respone and error code into
+      a string.
+
+    <Arguments>
+      return_response - The response from the call.
+
+      return_err - The error code to return if there was any.
+
+    <Return>
+      A serialized string with the network call's response and error.
+    """
+    if return_response == None:
+      return_val = "-1"
+    else:
+      return_val = str(return_response)
+
+    print "Packing values:", return_val, return_err
+
+    struct_format = "<i%ds" % len(return_val)
+    packed_msg = struct.pack(struct_format, return_err, return_val)
+
+    return packed_msg
 
 
 
 
 
-  def deserialize_network_call(request):
+
+  def deserialize_network_call(self, request):
     """
     <Purpose>
       The purpose is to deserialize the network call made that 
@@ -154,16 +206,17 @@ class LibnitListener():
     """
 
     # The first 20 bytes is used to store the network call name.
-    arg_len = len(request) - 21
+    arg_len = len(request) - 19
 
     # Unpack the received message into the function call and arg list.
+    print len(request)
     unpack_list = struct.unpack("19s%ds" % arg_len, request)
 
     # Since the data sent from the C side will have lots
     # of garbage (mostly null characters) after the actual data,
     # we clean up unpacked data.
-    call_func = list_recv[0].strip('\0')
-    call_args = list_recv[1].strip('\0')
+    call_func = unpack_list[0].strip('\0')
+    call_args = unpack_list[1].strip('\0')
     
     return (call_func, call_args)
 
@@ -172,19 +225,77 @@ class LibnitListener():
 
 
   def make_network_request(self, call_name, call_args):
-    pass
+    """
+    <Purpose>
+      Given a network call name and arguments. Process the
+      call with the arguments.
+
+    <Arguments>
+      call_name - The network call we need to make.
+
+      call_args - A list of all the arguments.
+
+    <Return>
+      A tuple with the error code and response.
+    """
+
+    # Retrieve the process function that will be used to process
+    # the network call.
+    process_method_name = "call_" + call_name
+
+    process_method = getattr(self.network_call_processor, process_method_name)
+
+    # Split the arguments.
+    call_arg_list = call_args.split(',')
+
+    try:
+      # Process the 'socket' call.
+      if call_name == 'socket':
+        domain = call_arg_list[0]
+        socket_type = call_arg_list[1]
+        
+        return process_method(domain, socket_type)
+
+      # Process the 'connect' call.
+      elif call_name == 'connect':
+        sock_fd = call_arg_list[0]
+        conn_ip = call_arg_list[1]
+        conn_port = call_arg_list[2]
+
+        return process_method(sock_fd, conn_ip, conn_port)
+
+      # Process the 'send' call.
+      elif call_name == 'send':
+        # Split the arguments a little differently. The message in send might
+        # have the character ','. So we split it only twice.
+        call_arg_list = call_args.split(',', 2)
+
+        sock_fd = call_arg_list[0]
+        flags = call_arg_list[1]
+        msg_to_send = call_arg_list[2]
+        
+        return process_method(sock_fd, msg_to_send, flags)
+      
+      # Process the 'recv' call.
+      elif call_name == 'recv':
+        sock_fd = call_arg_list[0]
+        len_to_recv = call_arg_list[1]
+        flags = call_arg_list[2]
+      
+        return process_method(sock_fd, len_to_recv, flags)
+
+      
+      # Process the 'close' call.
+      elif call_name == 'close':
+        sock_fd = call_arg_list[0]
+
+        return process_method(sock_fd)
+    except Exception, err:
+      print "Got a bad exception: " + str(err)
+      return (0, ECONNRESET)
 
 
-
-       
-  
-
-
-
-
-
-
-
+    
 # ===========================================================================
 # Define Exceptions
 # ===========================================================================
