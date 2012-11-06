@@ -21,8 +21,9 @@ import os
 import sys
 import socket
 
-#sys.path.append("TUF/src/")
-#import tuf
+sys.path.append("TUF/src/")
+#import client_module.example_client
+
 from network_call_processor import NetworkCallProcessor
 
 
@@ -95,9 +96,8 @@ class TUFTranslator(NetworkCallProcessor):
 	self.server_ip = server_ip
 	
 	#get mirror list dict from Konstantin's module
-	#self.mirror_list = tuf.Konst.get_mirror_list()
+	#self.mirror_list = example_client.get_mirrors()	
 	self.mirror_list = {}
-
 	# dict of all network calls	
 	self.network_calls = {}	
 	
@@ -180,8 +180,6 @@ class TUFTranslator(NetworkCallProcessor):
 	str_sock_id = str(sock_descript)
 	#socket file descriptor is not in dict
 	if not self.network_calls.get(str_sock_id):
-		print self.network_calls
-		print str_sock_id
 		return (None,9)	
 	
 	ai_addr = addr + ':'+str(port)
@@ -200,7 +198,7 @@ class TUFTranslator(NetworkCallProcessor):
 			sock_obj = socket.socket(self.network_calls[str_sock_id]['domain'],
 					 self.network_calls[str_sock_id]['sock_type'])
 			self.misc_network_calls[str_sock_id] = {}
-			sock_obj.connect((addr,port))	
+			#sock_obj.connect((addr,port))	
 			self.misc_network_calls[str_sock_id]['sock_obj'] = sock_obj
 			self.misc_network_calls[str_sock_id]['addr'] = addr
 			self.misc_network_calls[str_sock_id]['port'] = port
@@ -332,10 +330,10 @@ def main():
 	testing = TUFTranslator("127.1.100")
 	ret = testing.call_socket(socket.AF_INET,socket.SOCK_STREAM)
 	ret2 = testing.call_connect(ret[0],"www.google.com",80)
-	ret3 = testing.call_send(ret[0],"Hello")
-	ret4 = testing.call_recv(ret[0],1024)
+#	ret3 = testing.call_send(ret[0],"Hello")
+#	ret4 = testing.call_recv(ret[0],1024)
 	
-	print ret4
+	print ret2
 if __name__ == "__main__":
 	main()
-""""
+"""
