@@ -57,6 +57,7 @@
 
 import socket
 import struct
+import traceback
 
 
 # Define some global values and errorcodes.
@@ -70,7 +71,7 @@ class LibnitListener():
   # on network calls on an application.
 
 
-  def __init__(self, network_call_processor, libnit_port = 53678):
+  def __init__(self, network_call_processor, libnit_port = 53678, debug_mode=False):
     """
     <Purpose>
       Initialize LibnitListener with a network call processor.
@@ -91,6 +92,7 @@ class LibnitListener():
     # Use the provided object to process all network calls.
     self.network_call_processor = network_call_processor
     self.libnit_port = libnit_port
+    self.debug_mode = debug_mode
 
 
 
@@ -130,14 +132,18 @@ class LibnitListener():
       if not request:
         continue
 
-      print "Received request: '%s'" % request
+      if self.debug_mode:
+        print "Received request: '%s'" % request
+
       # Unwrap the request that the application made.
       network_call_type, call_args = self.deserialize_network_call(request)
     
       try:
         return_response, return_err = self.make_network_request(network_call_type, call_args)
       except Exception, err:
-        print "Got a bad error: " + str(err)
+        if self.debug_mode:
+          print "Got a bad error: " + str(traceback.format_exc)
+
         # If there is any error at all then we just send back
         # the ECONNRESET errorcode.
         return_response = ""
@@ -146,7 +152,9 @@ class LibnitListener():
       # Now that we have processed the network call, we are going to serialize
       # the response and error codes from the call then return it back to libnit.
       serialized_response = self.serialize_network_call_response(return_response, return_err)
-      print "Returning response: " + serialized_response
+
+      if self.debug_mode:
+        print "Returning response: " + serialized_response
 
       bytes_sent = libnit_conn.send(serialized_response)
     
@@ -291,7 +299,9 @@ class LibnitListener():
 
         return process_method(sock_fd)
     except Exception, err:
-      print "Got a bad exception: " + str(err)
+      if self.debug_mode:
+        print "Got a bad error: " + str(traceback.format_exc)
+          
       return (0, ECONNRESET)
 
 
