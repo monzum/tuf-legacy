@@ -467,7 +467,8 @@ class Modified_TestCase(unittest.TestCase):
     """
 
     list_of_all_roles = Modified_TestCase.role_list + \
-        Modified_TestCase.delegated_role_list
+        Modified_TestCase.delegated_role_list + \
+        ['mirrorlist']
     for role in list_of_all_roles:
       if role_thresholds:
         Modified_TestCase.bind_keys_to_a_role(role, 
