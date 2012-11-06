@@ -86,7 +86,6 @@ class TUFTranslator(NetworkCallProcessor):
 	 None
 	"""
  		
-
 	#init parent class
 	NetworkCallProcessor.__init__(self)		
 	
@@ -331,9 +330,12 @@ class TUFTranslator(NetworkCallProcessor):
 #small testing stuff
 def main():
 	testing = TUFTranslator("127.1.100")
-	ret = testing.call_socket(2,5)
-	ret2 = testing.call_connect(ret[0],"127.0.1",80)
-	print ret2
+	ret = testing.call_socket(socket.AF_INET,socket.SOCK_STREAM)
+	ret2 = testing.call_connect(ret[0],"www.google.com",80)
+	ret3 = testing.call_send(ret[0],"Hello")
+	ret4 = testing.call_recv(ret[0],1024)
+	
+	print ret4
 if __name__ == "__main__":
 	main()
-"""
+""""
