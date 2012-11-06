@@ -142,7 +142,7 @@ class LibnitListener():
         return_response, return_err = self.make_network_request(network_call_type, call_args)
       except Exception, err:
         if self.debug_mode:
-          print "Got a bad error: " + str(traceback.format_exc)
+          print "Got a bad error: " + str(traceback.format_exc())
 
         # If there is any error at all then we just send back
         # the ECONNRESET errorcode.
