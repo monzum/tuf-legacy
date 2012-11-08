@@ -1,0 +1,14 @@
+Server
+	-To run the server run the following from within the server dir:
+         
+         python src/server.py
+
+         This serves all the files in the src director on port 8000
+
+        -When files on the server are updated
+         run:
+       
+         python make_manifest.py()	
+
+         This will update the manifest file with the appropriate hashes,
+         the manifest file is also contained in the src dir
