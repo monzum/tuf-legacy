@@ -1,1 +1,5 @@
+To load the libnetworkinterpose run the command:
 
+$ source load_shim_proxy.sh
+
+Note: Do not run $ ./load_shim_proxy.sh, as it will not work.

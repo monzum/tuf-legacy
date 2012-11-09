@@ -321,7 +321,13 @@ class TUFTranslator(NetworkCallProcessor):
 	
     if len(self.network_calls) == 0 and len(self.misc_network_calls) == 0:
       self.sock_id = 1024
-      return (0,sock_close)		
+
+    # MonzurM: I am returning 0, -1 as default (not sure if this is the right
+    # thing to do here. Jerry could you verify this? Also note that the actual
+    # close() call doesn't return an integer. If the close() call is successful
+    # then it returns None, so sock_close gets set to None, which is why I am 
+    # returning (0, -1) instead of (0, sock_close).
+    return (0,-1)		
     """
 
 #small testing stuff
