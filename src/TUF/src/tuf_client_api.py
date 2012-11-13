@@ -89,7 +89,7 @@ def get_mirrors():
 
   # Extract mirrorlist dict from the 'mirrorlist.txt'.
   tuf.mirrorlist.load_mirrorlist_from_file(mirrorlist_filepath)
-  return tuf.mirrorlist.mirrors_dict
+  return tuf.mirrorlist.mirrorlist_dict
 
 
 
