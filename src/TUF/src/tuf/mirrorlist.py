@@ -69,9 +69,16 @@ def _prompt(message, result_type=str):
 
 
 def add_mirror():
+  """
+  <Purpose>
+    Add a mirror to mirrorlist_dict.
+
+  <Exceptions>
+    tuf.Error:
+      On failure to create a mirror.
+  """
 
   # Collecting necessary information for mirror's entry.
-
   for attempt in range(MAX_ATTEMPTS):
     mirror_name = _prompt('Enter mirror\'s name: ')
     tuf.formats.NAME_SCHEMA.check_match(mirror_name)
@@ -92,7 +99,7 @@ def add_mirror():
       break
 
   if mirror_name is None or mirror_url is None:
-    msg = ('\nYou\'ve entered '+MAX_ATTEMPTS+' invalid attempts.'+
+    msg = ('\nYou\'ve entered '+str(MAX_ATTEMPTS)+' invalid attempts.'+
            '\nExiting...')
     raise tuf.Error(msg)
 
@@ -309,6 +316,8 @@ def load_mirrorlist_from_file(mirrorlist_filepath):
     mirrorlist_dict[mirror_name] = mirror
     mirror_count += 1
 
+  return mirrorlist_dict
+
 
 
 
@@ -323,12 +332,11 @@ def _view_mirrorlist():
   print
   for mirror_name, mirror_info in mirrorlist_dict.items():
     print '\nMirror Name: '+mirror_name
-    print 'Mirror Info'
     print 'url_prefix: '+repr(mirror_info['url_prefix'])
-    print 'metadata_path: '+repr(mirror_info['metadata_path'])
-    print 'targets_path: '+repr(mirror_info['targets_path'])
-    print 'confined_target_paths: '+\
-          repr(mirror_info['confined_target_paths'])
+    #print 'metadata_path: '+repr(mirror_info['metadata_path'])
+    #print 'targets_path: '+repr(mirror_info['targets_path'])
+    #print 'confined_target_paths: '+\
+          #repr(mirror_info['confined_target_paths'])
 
 
 
@@ -387,12 +395,13 @@ def update_mirrorlist(url, metadata_directory):
   
   root_signable = tuf.util.load_json_file(root_filepath)
 
+  tuf.keydb.create_keydb_from_root_metadata(root_signable['signed'])
+  tuf.roledb.create_roledb_from_root_metadata(root_signable['signed'])
+
   keyid = mirrorlist_signable['signatures'][0]['keyid']
   mirrorlist_roleinfo = {}
   mirrorlist_roleinfo['keyids'] = [keyid]
   mirrorlist_roleinfo['threshold'] = 1
-
-  tuf.roledb.add_role('mirrorlist', mirrorlist_roleinfo, require_parent=False)
 
   # Verify 'mirrorlist_signable' signature.
   try:
@@ -405,11 +414,12 @@ def update_mirrorlist(url, metadata_directory):
     logger.debug('Good mirrorlist signature.')
   else:
     logger.warn('Bad mirrorlist signature.')
-    return
+    mirrorlist_signable = None
+
+  # Raise an exception if a valid metadata signable could not be downloaded
+  # from any of the mirrors.
+  if mirrorlist_signable is None:
+    raise tuf.RepositoryError('Unable to update \'mirrorlist.txt\'.')
+
 
   mirrorlist_tempfileobj.move(mirrorlist_current_filepath)
-
-  
-
-
-

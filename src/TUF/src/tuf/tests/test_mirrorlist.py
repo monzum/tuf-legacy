@@ -55,6 +55,8 @@ class TestMirrorlist(tuf.tests.unittest_toolbox.Modified_TestCase):
 
   def test_remove(self):
 
+    tuf.mirrorlist.mirrorlist_dict = {}
+
     def _mock_prompt(msg, junk=str):
       if msg.startswith('Enter mirror\'s name'):
         return 'mirror2'
@@ -67,20 +69,22 @@ class TestMirrorlist(tuf.tests.unittest_toolbox.Modified_TestCase):
       elif msg.startswith('Enter number of confined paths'):
         return '0'
       elif msg.startswith('Enter mirror\'s URL to remove'):
-        return 'http://localhost:8001'
+        return 'http://localhost:8002'
       elif msg.startswith('Do you want to add a mirror'):
         return 'n'
 
     tuf.mirrorlist._prompt = _mock_prompt
 
     tuf.mirrorlist.add_mirror()
-    self.assertEqual(len(tuf.mirrorlist.mirrorlist_dict), 2)
-
-    tuf.mirrorlist.remove_mirror()
     self.assertEqual(len(tuf.mirrorlist.mirrorlist_dict), 1)
+
     check_format = tuf.formats.MIRROR_SCHEMA.matches
     self.assertTrue(check_format(tuf.mirrorlist.mirrorlist_dict['mirror2']))
 
+    tuf.mirrorlist.remove_mirror()
+    self.assertEqual(len(tuf.mirrorlist.mirrorlist_dict), 0)
+
+    tuf.mirrorlist.mirrorlist_dict = self.mirrors 
 
  
 
@@ -99,7 +103,6 @@ class TestMirrorlist(tuf.tests.unittest_toolbox.Modified_TestCase):
 
   def test_3_build_mirrorlist_file(self):
     self.create_temp_keystore_directory(keystore_dicts=True)
-    #meta_dir = tempfile.mkdtemp(prefix='mirrorlist_test_')
     meta_dir = self.make_temp_directory()
     keyids = self.semi_roledict['mirrorlist']['keyids']
     tuf.mirrorlist.build_mirrorlist_file(self.mirrors, keyids, meta_dir)

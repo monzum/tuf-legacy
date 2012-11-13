@@ -19,6 +19,7 @@
 
 import os
 import logging
+import tuf.conf
 import tuf.mirrorlist
 import tuf.client.updater
 
@@ -31,7 +32,7 @@ tuf.conf.repository_directory = '.'
 
 
 
-def update_mirrorlist(url, metadata_dir):
+def update_mirrorlist(url):
   """
   <Purpose>
     Try to download latest version of mirrorlist metadata.
@@ -55,13 +56,15 @@ def update_mirrorlist(url, metadata_dir):
     None.
 
   """
+  
+  metadata_dir = os.path.join(tuf.conf.repository_directory, 'metadata')
   tuf.mirrorlist.update_mirrorlist(url, metadata_dir)
 
 
 
 
 
-def get_mirrors(metadata_dir):
+def get_mirrors():
   """
   <Purpose>
     Get the mirrors list.
@@ -80,9 +83,14 @@ def get_mirrors(metadata_dir):
 
   """
 
+  # Get the path to the 'mirrorlist.txt'.
+  metadata_dir = os.path.join(tuf.conf.repository_directory, 'metadata')
   current_dir = os.path.join(metadata_dir, 'current')
   mirrorlist_filepath = os.path.join(current_dir, 'mirrorlist.txt')
-  return tuf.mirrorlist.load_mirrorlist_from_file(mirrorlist_filepath)
+
+  # Extract mirrorlist dict from the 'mirrorlist.txt'.
+  tuf.mirrorlist.load_mirrorlist_from_file(mirrorlist_filepath)
+  return tuf.mirrorlist.mirrorlist_dict
 
 
 
@@ -108,7 +116,7 @@ def perform_an_update(destination_directory=TARGETS_DESTINATION_DIR):
   """
   # Create the repository object using the repository name 'repository'
   # and the repository mirrors.
-  repository_mirrors = get_mirrors('./metadata')
+  repository_mirrors = get_mirrors()
   repository = tuf.client.updater.Repository('repository', repository_mirrors)
 
   # Refresh the repository's top-level roles, store the target information for

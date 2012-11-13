@@ -72,8 +72,8 @@ def _open_connection(url):
     # Python-urllib/x.y.
     request = urllib2.Request(url)
     connection = urllib2.urlopen(request)
-  except urllib2.URLError, e:
-    raise 
+  except Exception, e:
+    raise tuf.DownloadError
   
   # urllib2.urlopen returns a file-like object, I think of it as a handle to the
   # remote data.

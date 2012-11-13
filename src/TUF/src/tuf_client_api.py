@@ -31,7 +31,7 @@ tuf.conf.repository_directory = '.'
 
 
 
-def update_mirrorlist(url, metadata_dir):
+def update_mirrorlist(url):
   """
   <Purpose>
     Try to download latest version of mirrorlist metadata.
@@ -115,7 +115,7 @@ def perform_an_update(destination_directory=TARGETS_DESTINATION_DIR):
   """
   # Create the repository object using the repository name 'repository'
   # and the repository mirrors.
-  repository_mirrors = get_mirrors(mirrorlist_filepath)
+  repository_mirrors = get_mirrors()
   repository = tuf.client.updater.Repository('repository', repository_mirrors)
 
   # Refresh the repository's top-level roles, store the target information for
