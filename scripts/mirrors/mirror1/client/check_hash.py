@@ -25,10 +25,9 @@ def check_hashes(my_manifest, check_manifest):
     check_hashes_dict[check_hashes[j][0]]=check_hashes[j][1:]
 
   #Check what has changed on the server
-  diff=set(check_hashes.keys()) - set(my_hashes_dict.keys()) 
+  diff=set(check_hashes_dict.keys()) - set(my_hashes_dict.keys()) 
 
-  i
   print diff
   return diff
 
-check_hashes(r'src/MANIFEST', r'MANIFEST')
+check_hashes(r'MANIFEST', r'MANIFEST_temp')

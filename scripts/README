@@ -12,3 +12,26 @@ Server
 
          This will update the manifest file with the appropriate hashes,
          the manifest file is also contained in the src dir
+
+Mirrors
+     
+      -Mirrors each have their own server to run for each mirror,
+     
+       python mirror#/src/server.py
+ 
+       where # is replaced by the mirror#
+       currently working on a script to automate serving all mirrors
+ 
+      -On the client side, there is a script get_files.py
+       this is intended to be used to get the manifest file from the server,
+       and fetch files if the manifest has changed since the last time
+       it was pulled from the server.  Currently, files are not fetched
+       but the manifest file is correctly retrieved and checked,
+       in the future we need to automate polling the serving regularly
+       with this script
+
+       python get_files.py <server dest>
+
+       in our case,
+
+       python get_files.py 127.0.0.1:8000
