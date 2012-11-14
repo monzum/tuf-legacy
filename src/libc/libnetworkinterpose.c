@@ -955,31 +955,31 @@ int select(int nfds, fd_set *readfds, fd_set *writefds,
 //
 //
 //
-//int close(int sockfd)
-//{
-//  char arg_list[10] = "";
-//  char buf[10] = "";
-//
-//  int repy_sock_fd = socket_fd_dict[sockfd % MAX_SOCK_FD];
-//
-//  memset(arg_list, 0, strlen(arg_list));
-//  memset(buf, 0, strlen(buf));
-//  my_itoa(repy_sock_fd, buf, 10);
-//  strcat(arg_list, buf);
-//
-//  char recv_buf[RECV_SIZE];
-//  int err_val;
-//
-//  // Send the info to the Repy proxy server
-//  forward_api_to_proxy(sockfd, "close", arg_list, recv_buf, &err_val);
-//
-//  if (err_val == ERRBADFD)
-//    (*libc_close)(sockfd);
-//  else if (err_val < 0)
-//    return atoi(recv_buf); 
-//  else
-//    return -1;	
-//}
+int close(int sockfd)
+{
+  char arg_list[10] = "";
+  char buf[10] = "";
+
+  int repy_sock_fd = socket_fd_dict[sockfd % MAX_SOCK_FD];
+
+  memset(arg_list, 0, strlen(arg_list));
+  memset(buf, 0, strlen(buf));
+  my_itoa(repy_sock_fd, buf, 10);
+  strcat(arg_list, buf);
+
+  char recv_buf[RECV_SIZE];
+  int err_val;
+
+  // Send the info to the Repy proxy server
+  forward_api_to_proxy(sockfd, "close", arg_list, recv_buf, &err_val);
+
+  if (err_val == ERRBADFD)
+    return (*libc_close)(sockfd);
+  else if (err_val < 0)
+    return atoi(recv_buf); 
+  else
+    return -1;	
+}
 
 
 

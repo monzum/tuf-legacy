@@ -321,9 +321,11 @@ class TUFTranslator(NetworkCallProcessor):
 	
     if len(self.network_calls) == 0 and len(self.misc_network_calls) == 0:
       self.sock_id = 1024
-      return (0,sock_close)		
-    """
 
+   return (0,-1)		
+
+
+"""
 #small testing stuff
 def main():
 	testing = TUFTranslator("127.1.100")

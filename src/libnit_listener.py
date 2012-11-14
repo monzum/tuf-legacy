@@ -182,9 +182,11 @@ class LibnitListener():
     else:
       return_val = str(return_response)
 
+    print "Return response is: " + str(return_response) + "Return val is: " + str(return_val)
     print "Packing values:", return_val, return_err
 
     struct_format = "<i%ds" % len(return_val)
+    print type(return_err), type(return_val)
     packed_msg = struct.pack(struct_format, return_err, return_val)
 
     return packed_msg
