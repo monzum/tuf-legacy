@@ -20,11 +20,10 @@
 import os
 import sys
 import socket
-
-#sys.path.append("TUF/src/")
-#import example_client
 from network_call_processor import NetworkCallProcessor
+sys.path.append("TUF/src/")
 
+from tuf_client_api import *
 
 class TUFTranslator(NetworkCallProcessor):
  """
@@ -74,7 +73,7 @@ class TUFTranslator(NetworkCallProcessor):
    upon socket close() call, this function removes the socket from the update_calls dict 
  """
   
- def __init__(self, server_ip):
+ def __init__(self, server_url):
     """
      <Purpose>
        Initiate TUFTranslator that will handle network calls from software updater
@@ -91,18 +90,33 @@ class TUFTranslator(NetworkCallProcessor):
     #socket descriptor id index	
     self.sock_id = 1024
 	
-    self.server_ip = server_ip
-	
-    #get mirror list dict from Konstantin's module
-    #self.mirror_list = example_client.get_mirrors()	
-    self.mirror_list = {}
+    self.server_url = server_url
    
-    # dict of all network calls	
+    #initial update mirror from server 	
+    update_mirrorlist(self.server_url)
+    self.mirror_list = get_mirrors()
     self.network_calls = {}	
 	
     #dict of network calls not made to mirrors
     self.misc_network_calls = {}
-
+ 
+ def url_to_ip(self, url):
+    """
+    <Purpose>
+     Get mirror url and transform to ip address
+    <Return>
+     ip:port of url
+    """  
+    url_split = url.split("//")
+    url_only = ''.join(url_split[len(url_split)-1])
+    url_split = url_only.split(":")
+    url_only = url_split[0] 
+    port = ''.join(url_split[len(url_split)-1])
+    if url_only == port:
+      return socket.gethostbyname(url_only)
+    return socket.gethostbyname(url_only)+":"+port
+  
+   
  def is_mirror(self,ip):
     """
       <Purpose>
@@ -115,11 +129,11 @@ class TUFTranslator(NetworkCallProcessor):
     """
     for mirror_name in self.mirror_list:
       mirror_url = self.mirror_list[mirror_name]['url_prefix']
-      mirror_ip = socket.gethostbyname(mirror_url)
+      mirror_ip = self.url_to_ip(mirror_url)
       if mirror_ip == ip:
-        return 1
-      return 0
-	
+       return 1
+    return 0 
+ 
  def call_socket(self,domain,socket_type):	
     """
       <Purpose>
@@ -181,17 +195,24 @@ class TUFTranslator(NetworkCallProcessor):
       return (None,9)	
 	
     ai_addr = addr + ':'+str(port)
-	
-    #check mirror list for ai_addr
-    #self.mirror_list = tuf.Konst.get_mirror_list()
-    mirror = self.is_mirror(addr)
-	
+    if port == None:
+      ai_addr = addr
+
+    #check if ai_addr is the server
+    ai_addr = self.url_to_ip(ai_addr) 
+    server_ip = self.url_to_ip(self.server_url) 
+    
+    if server_ip == ai_addr:
+      #update mirror list 
+      update_mirrorlist(self.server_url)
+      self.mirror_list = get_mirrors()
+    
+    mirror = self.is_mirror(ai_addr)
     if mirror:	
       self.network_calls[str_sock_id]['addr'] = addr
       self.network_calls[str_sock_id]['port'] = int(port)
       return (0,-1)
-    else:
-			
+    else:	
       try:
         sock_obj = socket.socket(
 		self.network_calls[str_sock_id]['domain'],
@@ -203,13 +224,7 @@ class TUFTranslator(NetworkCallProcessor):
 	self.misc_network_calls[str_sock_id]['sock_obj'] = sock_obj
 	self.misc_network_calls[str_sock_id]['addr'] = addr
 	self.misc_network_calls[str_sock_id]['port'] = int(port)
-			
-	#if ip is of server, update
-	# call Konstatntin's update function			
-	# can server also work as mirror? if so, put this outside
-        if addr == self.server_ip:
-	  print("try and except konstantin's update_mirror func")	
-	  return (0,-1)
+	return (0,-1)
       except socket.error,msg:
         return (None, msg[0])
 	
@@ -248,9 +263,10 @@ class TUFTranslator(NetworkCallProcessor):
       #split request into its components
       #[method][request-uri][protocol]
       request_components = msg.split()
-      if len(request_components[1]) == 0 or len(request_components[1]) == '/':
-        return (None,22) 
-      self.network_calls[str_sock_id]['update_file']=request_components[1]	
+      if  len(request_components) > 1:
+        if len(request_components[1]) == 0 or len(request_components[1]) == '/':
+          return (None,22) 
+          self.network_calls[str_sock_id]['update_file']=request_components[1]	
       return (len(msg),-1)
 
 
@@ -283,12 +299,14 @@ class TUFTranslator(NetworkCallProcessor):
 	return (recv_buf,-1)
       except socket.error, msg:
         return (None, msg[0])
-			
     else:
-      print ("Try/Except konstantin's update targets function")	
-      #return (filecontents,-1) or (None, error_msg)
-      return 0	
-
+      try:
+        perform_an_update()
+        #return (filecontents,-1) or (None, error_msg)
+      except:
+        print("TUF error updating target(s)")
+	pass
+    
  def call_close(self, sock_descript):
     """
      <Purpose>
@@ -321,20 +339,22 @@ class TUFTranslator(NetworkCallProcessor):
 	
     if len(self.network_calls) == 0 and len(self.misc_network_calls) == 0:
       self.sock_id = 1024
+    return (0,-1)		
 
-   return (0,-1)		
 
-
-"""
+""""
 #small testing stuff
 def main():
-	testing = TUFTranslator("127.1.100")
+
+        testing = TUFTranslator("http://localhost:8101")
 	ret = testing.call_socket(socket.AF_INET,socket.SOCK_STREAM)
-	ret2 = testing.call_connect(ret[0],"www.google.com",80)
-#	ret3 = testing.call_send(ret[0],"Hello")
-#	ret4 = testing.call_recv(ret[0],1024)
-	
-	print ret2
+	ret2 = testing.call_connect(ret[0],"google.com",80)
+	ret3 = testing.call_send(ret[0],'GET /HTTP/1.1\r\n\r\n')
+	ret4 = testing.call_recv(ret[0],1024)
+        print testing.network_calls
+	print testing.misc_network_calls
+	print ret4
+	ret5 = testing.call_close(ret[0])
 if __name__ == "__main__":
 	main()
 """
