@@ -17,6 +17,7 @@
 
 """
 
+import os
 import logging
 import tuf.conf
 import tuf.mirrorlist
@@ -95,7 +96,8 @@ def get_mirrors():
 
 
 
-def perform_an_update(destination_directory=TARGETS_DESTINATION_DIR):
+def perform_an_update(target_path=None, 
+                      destination_directory=TARGETS_DESTINATION_DIR):
   """
   <Purpose>
     Update metadata all metadata file, except 'mirrorlist.txt'.
@@ -103,11 +105,19 @@ def perform_an_update(destination_directory=TARGETS_DESTINATION_DIR):
     all necessary security checks on them.
 
   <Arguments>
-    None.
+    target_path:
+      Specific target file to download.  In this case only 'target_path' file
+      will be downloaded, not all the targets that were updated.  'target_path' 
+      should be relative to the value (which is a directory) of the 
+      'targets_path' key of the mirror's dictionary, like 'targets'.
+
+    destination_directory:
+      A directory where the target files are stored/saved.
 
   <Side Effects>
     All metadata files are updated with previous versions of metadata saved
-    at {...}/metadata/previous/ directory.  
+    at {...}/metadata/previous/ directory.  Target file(s) are downloaded and
+    stored at the 'destination_directory'.
 
   <Return>
     None.
@@ -117,20 +127,23 @@ def perform_an_update(destination_directory=TARGETS_DESTINATION_DIR):
   # and the repository mirrors.
   repository_mirrors = get_mirrors()
   repository = tuf.client.updater.Repository('repository', repository_mirrors)
+  targets = []
 
   # Refresh the repository's top-level roles, store the target information for
   # all the targets tracked, and determine which of these targets have been
   # updated.
   repository.refresh()
-  all_targets = repository.all_targets()
-  updated_targets = repository.updated_targets(all_targets, 
+  
+  if target_path is not None:
+    target = repository.target(target_path)
+    targets.append(target)
+
+  else:
+    targets = repository.all_targets()
+ 
+  updated_targets = repository.updated_targets(targets, 
                                                destination_directory)
 
   # Download each of these updated targets and save them locally.
   for target in updated_targets:
     repository.download_target(target, destination_directory)
-
-  # Remove any files from the destination directory that are no longer being
-  # tracked.
-  #repository.remove_obsolete_targets(destination_directory)
-

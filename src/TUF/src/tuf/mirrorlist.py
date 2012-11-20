@@ -382,7 +382,7 @@ def update_mirrorlist(url, metadata_directory):
   try:
     mirrorlist_tempfileobj = download_mirrorlist(url)
   except tuf.DownloadError, e:
-    legger.warn('Mirrorlist metadata file download failed.')
+    logger.warn('Mirrorlist metadata file download failed.')
     return
 
   mirrorlist_signable = tuf.util.load_json_string(mirrorlist_tempfileobj.read()) 

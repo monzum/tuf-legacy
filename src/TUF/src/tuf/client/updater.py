@@ -1447,7 +1447,8 @@ class Repository(object):
     # to avoid duplicate files.
     target = []
     for rolename in all_rolenames:
-      if self.metadata['current'][rolename]['_type'] != 'Targets':
+      if rolename == 'mirrorlist' or \
+         self.metadata['current'][rolename]['_type'] != 'Targets':
         continue
       # We have a target role.  Extract the filepath and fileinfo
       # and compare it to 'target_filepath'.  Compare the fileinfo
