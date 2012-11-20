@@ -39,7 +39,8 @@ def update_mirrorlist(url):
 
   <Arguments>
     url:
-      Address from where 'mirrorlist.txt' file should be downloaded.
+      A full url path from where mirrorlist.txt can be downloaded.
+      ex: http://localhost:8101/metadata/mirrorlist.txt
 
     metadata_dir:
       Directory where all, latest client's metadata is located.
@@ -56,6 +57,9 @@ def update_mirrorlist(url):
     None.
 
   """
+  
+  if not url.endswith('mirrorlist.txt'):
+    url +="/metadata/mirrorlist.txti"
   
   metadata_dir = os.path.join(tuf.conf.repository_directory, 'metadata')
   tuf.mirrorlist.update_mirrorlist(url, metadata_dir)
