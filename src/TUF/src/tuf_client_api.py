@@ -28,7 +28,7 @@ import tuf.client.updater
 
 # The local destination directory to save the target files.
 TARGETS_DESTINATION_DIR = './targets'
-tuf.conf.repository_directory = '.'
+tuf.conf.repository_directory = './client'
 
 
 
@@ -56,7 +56,8 @@ def update_mirrorlist(url):
     None.
 
   """
-  
+  #11/13/2012: Add path of mirror list on server for download
+  url +="/metadata/mirrorlist.txt"  
   metadata_dir = os.path.join(tuf.conf.repository_directory, 'metadata')
   tuf.mirrorlist.update_mirrorlist(url, metadata_dir)
 
