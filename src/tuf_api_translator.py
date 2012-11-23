@@ -266,7 +266,7 @@ class TUFTranslator(NetworkCallProcessor):
       if  len(request_components) > 1:
         if len(request_components[1]) == 0 or len(request_components[1]) == '/':
           return (None,22) 
-          self.network_calls[str_sock_id]['update_file']=request_components[1]	
+          self.network_calls[str_sock_id]['target_update']=request_components[1]	
       return (len(msg),-1)
 
 
@@ -301,12 +301,11 @@ class TUFTranslator(NetworkCallProcessor):
         return (None, msg[0])
     else:
       try:
-        perform_an_update()
-        #return (filecontents,-1) or (None, error_msg)
+        target = self.network_cals[str_sock_id]["target_update"]
+        recv_buffer = perform_an_update(target)
+        return (recv_buffer,-1) 
       except:
-        print("TUF error updating target(s)")
-	pass
-    
+	return (None, "Tuf error updating targets(s)")
  def call_close(self, sock_descript):
     """
      <Purpose>
@@ -342,7 +341,7 @@ class TUFTranslator(NetworkCallProcessor):
     return (0,-1)		
 
 
-""""
+"""
 #small testing stuff
 def main():
 
@@ -351,10 +350,11 @@ def main():
 	ret2 = testing.call_connect(ret[0],"google.com",80)
 	ret3 = testing.call_send(ret[0],'GET /HTTP/1.1\r\n\r\n')
 	ret4 = testing.call_recv(ret[0],1024)
-        print testing.network_calls
-	print testing.misc_network_calls
-	print ret4
+        #print testing.network_calls
+	#print testing.misc_network_calls
+	#print ret4
 	ret5 = testing.call_close(ret[0])
 if __name__ == "__main__":
 	main()
+
 """

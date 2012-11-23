@@ -315,7 +315,7 @@ def load_mirrorlist_from_file(mirrorlist_filepath):
     mirrorlist_dict[mirror_name] = {}
     mirrorlist_dict[mirror_name] = mirror
     mirror_count += 1
-
+  
   return mirrorlist_dict
 
 

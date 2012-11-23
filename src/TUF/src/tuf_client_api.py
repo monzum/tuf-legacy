@@ -27,10 +27,11 @@ import tuf.client.updater
 #tuf.log.set_log_level(logging.DEBUG)
 
 # The local destination directory to save the target files.
-TARGETS_DESTINATION_DIR = './targets'
-tuf.conf.repository_directory = '.'
+tuf.conf.repository_directory = './client'
+TARGETS_DESTINATION_DIR = 'targets'
 
-
+#modifying TARGETS_DESTINATION_DIR to include into clients subdir
+TARGETS_DESTINATION_DIR = os.path.join(tuf.conf.repository_directory,TARGETS_DESTINATION_DIR)
 
 def update_mirrorlist(url):
   """
@@ -59,7 +60,7 @@ def update_mirrorlist(url):
   """
   
   if not url.endswith('mirrorlist.txt'):
-    url +="/metadata/mirrorlist.txti"
+    url +="/metadata/mirrorlist.txt"
   
   metadata_dir = os.path.join(tuf.conf.repository_directory, 'metadata')
   tuf.mirrorlist.update_mirrorlist(url, metadata_dir)
@@ -151,3 +152,13 @@ def perform_an_update(target_path=None,
   # Download each of these updated targets and save them locally.
   for target in updated_targets:
     repository.download_target(target, destination_directory)
+
+  #11/21/2012. Return contents of update to TUFTranslator (simple approach)
+  update = os.path.join(destination_directory, target)
+  try:
+    update_handler = open(update,'r')
+    content = update_handler.read()
+    update_handler.close()
+    return content
+  except:
+    return None

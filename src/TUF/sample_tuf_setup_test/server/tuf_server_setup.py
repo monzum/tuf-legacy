@@ -18,6 +18,9 @@
 
 """
 import os
+
+import sys
+sys.path.append("../../../TUF/src")
 import quickstart
 
 
