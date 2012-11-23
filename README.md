@@ -13,7 +13,11 @@ Goal:Incorporate The Update Framework (TUF) into legacy applications.
 Scenario: An application x has a built-in software updater that (from time to time) polls its server
           to see if any of its files need to be updated. If so, the software updater contacts available
 	  mirrors(s) and perform the necessary updates. 
-          As discussed in updateframerwork.com/wiki/Docs/Security, there are numerous security flaws with          this current approach. TUF reduces many of these security flaws through various checks. However, adding TUF to application x requires modification to x codebase;  This may be cumbersom for software developers, as well as users of legacy applications. Our work provides a layer that works between aplication x and TUF to provide the security features of TUF, without the need to modify x
+          As discussed in updateframerwork.com/wiki/Docs/Security, there are numerous security flaws with this current 
+          approach. TUF reduces many of these security flaws through various checks. However, adding TUF to 
+          application x requires modification to x codebase;  this may be cumbersome for software developers,
+          as well as users of legacy applications. Our work provides a layer that works between aplication x and TUF
+          to provide the security features of TUF, without the need to modify x.
 
 Approach: The main idea behind our approach is to intercept ALL network calls of the application x, 
 	  forward the ones not related to software updating, and process the ones related to software
