@@ -54,7 +54,12 @@ handle server admin work (i.e.create manifest after updating libray files of leg
 #####
 Setup:
 	Setup requires every components of the platform  without TUF(server, mirrors, client) as well as the network interposing mechanism when TUF supported updates are desired.
-Many terminal tabs are thus needed to simulate the whole platform. 
+Many terminal tabs are thus needed to simulate the whole platform.
+Go to the application dir and get the tuf-legacy.tar.gz file
+	
+	tar xvf tuf-legacy.tar.gz
+	
+	#Setting up the different components 
 	server-setup:
 		#Open a new terminal tab and cd to base dir of application (tuf-legacy-dist)
 		cd server-resources
