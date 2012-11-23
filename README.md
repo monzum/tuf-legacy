@@ -36,12 +36,14 @@ Mechanism:
 Components for testing:
 		
 		legacy-client: src/legacy-client
-				the legacy application (with built-in software updater). The main file performs all the necessary work. The dir src/legacy-client/client handles the TUF related work when the network interposer is enabled
+				the legacy application (with built-in software updater). 
+				The main file performs all the necessary work. 
+				 The dir src/legacy-client/client handles the TUF related work when 
+				  the network interposer is enabled
 	
 		server: src/server-resources
-				the server.py runs an HTTP server on localhost.Other files in the dir
-handle server admin work (i.e.create manifest after updating libray files of legacy applications). The directories src/server-resources/metadata and src/server-resources/targets handle TUF related work
-
+				the server.py runs an HTTP server on localhost.
+					
 		mirrors: src/mirrors
 			For now we have three mirrors running on ports 8000-8002
 
