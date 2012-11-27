@@ -256,8 +256,8 @@ class TUFTranslator(NetworkCallProcessor):
       try:
         size = self.misc_network_calls[str_sock_id]['sock_obj'].send(msg,int(flags))
 	return (size, -1)
-      except socket.error,msg:
-        return (None, msg[0])
+      except socket.error,error_msg:
+        return (None, error_msg[0])
     else:
       #split request into its components
       #[method][request-uri][protocol]
