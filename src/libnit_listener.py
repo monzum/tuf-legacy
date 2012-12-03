@@ -57,6 +57,7 @@
 
 import socket
 import struct
+import threading
 import traceback
 
 
@@ -121,13 +122,48 @@ class LibnitListener():
     libnit_sock.listen(1)
 
     print "Starting to listen on port '%d' for Libnit connections." % self.libnit_port
-    (libnit_conn, libnit_addr) = libnit_sock.accept()
+
+    while True:
+      (libnit_conn, libnit_addr) = libnit_sock.accept()
+  
+      # Once we have accepted the connection, launch a new thread to handle
+      # the new connection.
+      network_handle_thread = threading.Thread(target=self.handle_network_requests, args=(libnit_conn,))
+      network_handle_thread.start()
     
-    
+
+
+
+  def handle_network_requests(self, libnit_conn):
+    """
+    <Purpose>
+      Given a socket connection, handle all the network requests
+      made on that particular socket.
+
+    <Arguments>
+      libnit_conn - the connection to handle.
+
+    <Exception>
+      No exceptions are raised, however if libnit_conn closes then
+      this function exits.
+
+    <Return>
+      None
+    """
     # Continuously serve all the incoming network call requests.
+    # POSSIBLE BUG: I return from this function when libnit_conn
+    # raises an error on recv or send. Hopefully if the application
+    # closes then a socket.error would be raised. However if no error
+    # is raised when the application closes, then this thread may run
+    # forever.
     while True:
       # Receive the incoming request.
-      request = libnit_conn.recv(4096)
+      try:
+        request = libnit_conn.recv(4096)
+      except:
+        if self.debug_mode:
+          print "Connection has been closed on: " + str(libnit_conn)
+        return
 
       if not request:
         continue
@@ -156,8 +192,12 @@ class LibnitListener():
       if self.debug_mode:
         print "Returning response: " + serialized_response
 
-      bytes_sent = libnit_conn.send(serialized_response)
-    
+      try:
+        bytes_sent = libnit_conn.send(serialized_response)
+      except:
+        if self.debug_mode:
+          print "Connection has been closed on: " + str(libnit_conn)
+        return
   
 
 

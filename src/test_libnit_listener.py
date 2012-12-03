@@ -57,7 +57,7 @@ def main():
 
     simple_processor = TestProcessor()
     
-    new_listener = libnit_listener.LibnitListener(simple_processor)
+    new_listener = libnit_listener.LibnitListener(simple_processor, debug_mode=True)
     
     new_listener.serve_forever()
 
