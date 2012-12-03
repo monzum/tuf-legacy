@@ -72,8 +72,8 @@ def _open_connection(url):
     # Python-urllib/x.y.
     request = urllib2.Request(url)
     connection = urllib2.urlopen(request)
-  except urllib2.URLError, e:
-    raise 
+  except Exception, e:
+    raise tuf.DownloadError
   
   # urllib2.urlopen returns a file-like object, I think of it as a handle to the
   # remote data.
@@ -180,10 +180,8 @@ def download_url_to_tempfileobj(url, required_hashes=None, required_length=None)
   logger.info('Downloading '+url)
   connection = _open_connection(url)
   temp_file = tuf.util.TempFile()
-
   # Keep track of total bytes downloaded.
   total_downloaded = 0
-
   try:
     # info().get('Content-Length') gets the length of the url file.
     file_length = int(connection.info().get('Content-Length'))
@@ -229,5 +227,6 @@ def download_url_to_tempfileobj(url, required_hashes=None, required_length=None)
     temp_file.close_temp_file()
     logger.error(str(e))
     raise tuf.DownloadError(e)
+   
 
   return temp_file

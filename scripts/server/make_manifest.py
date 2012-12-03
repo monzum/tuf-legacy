@@ -6,8 +6,9 @@ from sha256 import make_namehash, make_filehash
 #of all files and directories being served
 
 def make_manifest():
-  manifest = open("src/MANIFEST", 'wb')
-  for dirname, dirnames, filenames in os.walk('src'):
+  manifest = open("MANIFEST", 'wb')
+  for dirname, dirnames, filenames in os.walk('legacy-app-lib'):
+    print filenames
     #add a manifest entry for a sub-directory
     for subdirname in dirnames:
       tmp = os.path.join(dirname, subdirname)
