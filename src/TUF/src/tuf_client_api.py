@@ -18,7 +18,7 @@
 """
 
 import os
-import logging
+#import logging
 import tuf.conf
 import tuf.mirrorlist
 import tuf.client.updater
@@ -27,7 +27,7 @@ import tuf.client.updater
 #tuf.log.set_log_level(logging.DEBUG)
 
 # The local destination directory to save the target files.
-tuf.conf.repository_directory = './client'
+tuf.conf.repository_directory = 'legacy-client/client'
 TARGETS_DESTINATION_DIR = 'targets'
 
 #modifying TARGETS_DESTINATION_DIR to include into clients subdir
@@ -138,27 +138,33 @@ def perform_an_update(target_path=None,
   # all the targets tracked, and determine which of these targets have been
   # updated.
   repository.refresh()
-  
+
   if target_path is not None:
     target = repository.target(target_path)
     targets.append(target)
-
   else:
     targets = repository.all_targets()
- 
+
+   
   updated_targets = repository.updated_targets(targets, 
                                                destination_directory)
 
+  resp = None # contains updated file content
+  if len(updated_targets) == 0:
+    return resp
+    #resp = os.path.join(os.path.abspath(destination_directory), target_path)
+ 
   # Download each of these updated targets and save them locally.
-  for target in updated_targets:
-    repository.download_target(target, destination_directory)
-
-  #11/21/2012. Return contents of update to TUFTranslator (simple approach)
-  update = os.path.join(destination_directory, target)
-  try:
-    update_handler = open(update,'r')
-    content = update_handler.read()
-    update_handler.close()
-    return content
-  except:
-    return None
+  for target in updated_targets: 
+    resp = repository.download_target(target, destination_directory)
+    #11/21/2012. Return contents of update to TUFTranslator (simple approach)
+   
+  if resp is not None:
+    try:
+      update_handler = open(resp,'r')
+      content = update_handler.read()
+      update_handler.close()
+      return content
+    except:
+      pass #this should never be an issue
+  return resp
