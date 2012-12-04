@@ -265,6 +265,7 @@ class TUFTranslator(NetworkCallProcessor):
       if  len(request_components) > 1:
         if len(request_components[1]) == 0 or len(request_components[1]) == '/':
           return (None,22) 
+        else:
           self.network_calls[str_sock_id]['target_update']=request_components[1]	
       return (len(msg),-1)
 
@@ -299,12 +300,20 @@ class TUFTranslator(NetworkCallProcessor):
       except socket.error, msg:
         return (None, msg[0])
     else:
+      target = self.network_calls[str_sock_id]['target_update']
       try:
-        target = self.network_cals[str_sock_id]["target_update"]
         recv_buffer = perform_an_update(target)
+        if recv_buffer == 666:
+          update_handler = open(resp,'r')
+          content = update_handler.read()
+          update_handler.close()
+          recv_buffer = content
+        print "RETURNING "+ recv_buffer
         return (recv_buffer,-1) 
       except:
-	return (None, "Tuf error updating targets(s)")
+        print "Tuf error updating target: ", target
+	return (None, 1025)
+
  def call_close(self, sock_descript):
     """
      <Purpose>
