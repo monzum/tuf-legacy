@@ -1,4 +1,4 @@
-test-dist for tuf-legacy
+TUF support for legacy applications
 
 Goal:Incorporate The Update Framework (TUF) into legacy applications.
      TUF provides a secure approach for software updaters
@@ -37,65 +37,11 @@ Mechanism:
 		- Return requested updated transparently to software updater
 		
 
-Components for testing:
-		
-		legacy-client: src/legacy-client
-				the legacy application (with built-in software updater). 
-				The main file performs all the necessary work. 
-				 The dir src/legacy-client/client handles the TUF related work when 
-				  the network interposer is enabled
-	
-		server: src/server-resources
-				the server.py runs an HTTP server on localhost.
-					
-		mirrors: src/mirrors
-			For now we have three mirrors running on ports 8000-8002
 
 
 
-#####
-Setup:
-	Setup requires every components of the platform  without TUF(server, mirrors, client) as well as the network interposing mechanism when TUF supported updates are desired.
-Many terminal tabs are thus needed to simulate the whole platform.
-Go to the application dir and get the tuf-legacy.tar.gz file
-	
-	tar xvf tuf-legacy.tar.gz
-	
-	#Setting up the different components 
-	server-setup:
-		#Open a new terminal tab and cd to base dir of application (tuf-legacy-dist)
-		cd server-resources
-		python server.py
-		#When TUF is enabled the server makes use of metadata/ and client/ dirs
+For more details on testing this project, read the README file in the application dir
 
-	mirrors-setup:
-		#We need at least 1 mirror to run the project.
-		#For each mirror:
-			#Open a new terminal tab and cd to base dir of application (tuf-legacy-dist)
-			cd mirrors/mirror[i]/files    #where [i] is 1, 2 or 3)
-			python ../mirror[i].py #run the specic mirror from the files dir where targets are
-
-	client-setup:
-		#The client can be setup with tuf enabled-support or without	
-		#For client initialization without TUF:
-		#Open a new  terminal tab and cd to base dir of application(tuf-legacy-dist)
-		cd legacy-client
-		python legacy-client.py
-
-		#To enable TUF-support:
-			1.#Setup the network interpose listener to re-direct necessary calls to TUF
-			   #Open a  tab and cd to the base dir of application (tuf-legacy-dist)
-			  python socket_interposer.py 
-			2.#Use LD_PRELOAD to interpose network calls of the client application
-			  #Open a tab and cd to the base dir of the application (tuf-legacy-dist)
-			   cd libc
-			   . load_shim_proxy.sh  #load new libc on current terminal
-			   cd ../legacy-client
-			   python legacy-client.py #now client is running with TUF support
-
-
-The setup must be followed in the order provided above
-For now, the main interaction is to be done through the legacy-client options
 
 
 LIMITATIONS:
