@@ -36,7 +36,8 @@ where the network related entities run on localhost
 So far, the project has been test on ubuntu 12. We plan on testing it for other Linux versions
 in the near future
 
-		1) untar xvf TUF-LEGACY.tar.gz
+		1) tar xvf TUF-LEGACY.tar.gz
+		   rm TUF-LEGACY.tar.gz
 		   cd tuf-legacy
 	
 		2) #Server setup
@@ -49,16 +50,21 @@ in the near future
 		    #open a new terminal tab
 		    #go to tuf-legacy dir
 		    tar xvf tuf-support.tar.gz
-		    mv * ../   #move all contents of tuf-support to legacy-client dir
+		    cd tuf-support
+		    mv * ../legacy-client   #move all contents of tuf-support to legacy-client dir
+		    cd ../
+		    rm -rf tuf-support
+		    rm -rf tuf-support.tar.gz
 		    su   #get root access
+                    cd legacy-client
 		    python setup.py
 		    
 		    # In essence, tuf-support.tar.gz contains the resources that 
 		    # the legacy application will use for tuf-supported updates
 
 
-		4) Reboot machine for changes to take effect
-		5) Repeat step 2 ( setup servers)
+		4) Reboot machine after successful setup for changes to take effect
+		5) Repeat step 2 ( setup server)
 	
 		6) #Mirror(s) setup
 		   #For each mirror, open a new terminal tab and do the following
@@ -77,7 +83,7 @@ in the near future
 		   cd legacy-client   #it should now contain tuf-related resources as well
 		   python socket_interposer.py 
 
-		8) Legacy client setup
+		8) Legacy client setup with tuf support
 		   #open a new tab window
 		   #go to tuf-legacy dir 
 		    cd legacy-client #it should now contain the tuf-related resources as well
