@@ -1,0 +1,95 @@
+Tuf for legacy applications setup:
+
+Components for testing:
+		
+	   1)	legacy-client: legacy-client/
+		the legacy application (with built-in software updater). The main file performs all the
+		necessary work. The dir src/legacy-client/client handles the TUF related work when the
+		network interposer is enabled
+	
+		We implemented a simple legacy application whose regular work is to connect to a 
+		google server and  return the response of index.html
+		The application also connects to server and mirrors to update files
+		See README file in legacy-client/ directory
+
+	
+	    2)	server: server-resources/
+		the server.py runs an HTTP server on localhost.It provides a basic server that hosts
+		files, MANIFEST and  TUF related files
+	
+
+	    3)	mirrors: mirrors/
+		For now we have three mirrors running on ports 8000-8002. The provide basic mirror 	
+		roles and also host files for TUF related security checks
+
+
+#####
+Setup:
+
+Setup requires every components of the platform  without TUF(server, mirrors, client) as 
+well as the network interposing mechanism when TUF supported updates are desired.
+Many terminal tabs are thus needed to simulate the whole platform.
+
+The TUF-LEGACY.tar.gz contains the files needed for setting up a test platform of the project,
+where the network related entities run on localhost
+
+So far, the project has been test on ubuntu 12. We plan on testing it for other Linux versions
+in the near future
+
+		1) untar xvf TUF-LEGACY.tar.gz
+		   cd tuf-legacy
+	
+		2) #Server setup
+		   #open a new terminal tab
+		   #go to tuf-legacy dir
+		   cd server-resources
+		   python server.py
+
+		3)  #Install tuf-support for legacy-client
+		    #open a new terminal tab
+		    #go to tuf-legacy dir
+		    tar xvf tuf-support.tar.gz
+		    mv * ../   #move all contents of tuf-support to legacy-client dir
+		    su   #get root access
+		    python setup.py
+		    
+		    # In essence, tuf-support.tar.gz contains the resources that 
+		    # the legacy application will use for tuf-supported updates
+
+
+		4) Reboot machine for changes to take effect
+		5) Repeat step 2 ( setup servers)
+	
+		6) #Mirror(s) setup
+		   #For each mirror, open a new terminal tab and do the following
+			#cd to tuf-legacy dir
+			cd mirrors/mirror[i]/files  #where [i] is 1,2 or 3
+			python ../mirror[i] #where [i] is 1,2 or 3
+
+	
+		### At this stage, the server and mirror(s) are running and
+		    tuf-support is setup in the working directory of the legacy application
+		
+		
+		7) #Setup interpose mechanism 
+		   #open a new terminal window
+		   #go to tuf-legacy dir
+		   cd legacy-client   #it should now contain tuf-related resources as well
+		   python socket_interposer.py 
+
+		8) Legacy client setup
+		   #open a new tab window
+		   #go to tuf-legacy dir 
+		    cd legacy-client #it should now contain the tuf-related resources as well
+		    cd libc
+		    . load_shim_proxy.sh #overloading libc library
+ 		    cd ../ #back to legacy-client dir
+		    python legacy-client.py 
+		
+		## Now, the legacy application is running with TUF support
+		## To run without TUF support, skip step 7, and in step 8, simply launch 
+	 	## legacy-client.py without overloading libc library
+
+
+
+ 	
