@@ -165,7 +165,7 @@ class LibnitListener():
           print "Connection has been closed on: " + str(libnit_conn)
         return
 
-      if not request:
+      if not request: 
         continue
 
       if self.debug_mode:
@@ -330,8 +330,7 @@ class LibnitListener():
       elif call_name == 'recv':
         sock_fd = call_arg_list[0]
         len_to_recv = call_arg_list[1]
-        flags = call_arg_list[2]
-      
+        flags = call_arg_list[2] 
         return process_method(sock_fd, len_to_recv, flags)
 
       

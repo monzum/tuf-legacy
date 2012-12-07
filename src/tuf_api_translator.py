@@ -207,7 +207,7 @@ class TUFTranslator(NetworkCallProcessor):
       self.mirror_list = get_mirrors()
     
     mirror = self.is_mirror(ai_addr)
-    if mirror:	
+    if mirror:
       self.network_calls[str_sock_id]['addr'] = addr
       self.network_calls[str_sock_id]['port'] = int(port)
       return (0,-1)
@@ -218,7 +218,7 @@ class TUFTranslator(NetworkCallProcessor):
 		self.network_calls[str_sock_id]['sock_type'])
 	self.misc_network_calls[str_sock_id] = {}
 	sock_obj.connect((addr,int(port)))	
-	
+  
 	#adding connect parameters to dict 
 	self.misc_network_calls[str_sock_id]['sock_obj'] = sock_obj
 	self.misc_network_calls[str_sock_id]['addr'] = addr
@@ -226,6 +226,7 @@ class TUFTranslator(NetworkCallProcessor):
 	return (0,-1)
       except socket.error,msg:
         return (None, msg[0])
+
 	
  def  call_send(self, sock_descript,msg,flags=0):
     """
@@ -247,6 +248,7 @@ class TUFTranslator(NetworkCallProcessor):
 	(len(msg, -1) on success
 	 (None, errno) on failure 
     """
+   
     str_sock_id = str(sock_descript)
     if not self.network_calls.get(str_sock_id):
       return (None, 9)
@@ -266,7 +268,10 @@ class TUFTranslator(NetworkCallProcessor):
         if len(request_components[1]) == 0 or len(request_components[1]) == '/':
           return (None,22) 
         else:
-          self.network_calls[str_sock_id]['target_update']=request_components[1]	
+	  requested_file = request_components[1]
+          if request_components[1][0] == '/': #remove initial, unecessary /
+	    requested_file = request_components[1][1:]
+          self.network_calls[str_sock_id]['target_update']=requested_file	
       return (len(msg),-1)
 
 
@@ -294,25 +299,23 @@ class TUFTranslator(NetworkCallProcessor):
       return (None, 9)
 	
     if self.misc_network_calls.get(str_sock_id):
-      try:
+      try: 
         recv_buf = self.misc_network_calls[str_sock_id]["sock_obj"].recv(int(buff_size),int(flags))
 	return (recv_buf,-1)
       except socket.error, msg:
         return (None, msg[0])
     else:
-      target = self.network_calls[str_sock_id]['target_update']
       try:
-        recv_buffer = perform_an_update(target)
-        if recv_buffer == 666:
-          update_handler = open(resp,'r')
-          content = update_handler.read()
-          update_handler.close()
-          recv_buffer = content
-        print "RETURNING "+ recv_buffer
-        return (recv_buffer,-1) 
+        target = self.network_calls[str_sock_id]['target_update'] 
+        recv_buf = perform_an_update(target)
+        if recv_buf is None:
+          return (None, 2) #simulate file not found error
+        return (recv_buf, -1)
       except:
-        print "Tuf error updating target: ", target
-	return (None, 1025)
+        return (None, 2)#simulate file not found error
+
+
+
 
  def call_close(self, sock_descript):
     """
@@ -349,20 +352,3 @@ class TUFTranslator(NetworkCallProcessor):
     return (0,-1)		
 
 
-"""
-#small testing stuff
-def main():
-
-        testing = TUFTranslator("http://localhost:8101")
-	ret = testing.call_socket(socket.AF_INET,socket.SOCK_STREAM)
-	ret2 = testing.call_connect(ret[0],"google.com",80)
-	ret3 = testing.call_send(ret[0],'GET /HTTP/1.1\r\n\r\n')
-	ret4 = testing.call_recv(ret[0],1024)
-        #print testing.network_calls
-	#print testing.misc_network_calls
-	#print ret4
-	ret5 = testing.call_close(ret[0])
-if __name__ == "__main__":
-	main()
-
-"""
