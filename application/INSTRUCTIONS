@@ -64,6 +64,8 @@ in the near future
 
 
 		4) Reboot machine after successful setup for changes to take effect
+		  # At this stage the environemental variable TUF_LEGACY should be set as the main path of the client
+
 		5) Repeat step 2 ( setup server)
 	
 		6) #Mirror(s) setup
