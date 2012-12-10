@@ -1,0 +1,40 @@
+{
+ "signatures": [
+  {
+   "keyid": "2eb1ac745b75429f6b1b202683723a9de31a067f16d60c7353c35bfb716f8151", 
+   "method": "evp", 
+   "sig": "4bd70308af8a16f6593b59895cd4ae405d9804b5913f40281a3f44d6305685e6cfbf9388a6fc80e443b27558975d815ebbfab3e4380bd68e7da7bc6b0302edbf5e17f5ee8bb354e255d73cb62a28c1139ed8a0adb245a28d441398a187be8c8b3d94ad5d8721a20bfd4eaf6839667622a73528b393d50a30b8f3eefd4606fee1eb916aed4f4b3d80ab09d6765b35ada977f2ae3fa7788411abb9061e09789f75afc657a01263c4347b271177462dc9cc8d9527403379806514a2e4bfcb631ef95b605302ff7900a6e1917ce19011b2edacf820e1bcb3bcc4cc8dc980c0cd0c6430d78cd158fb978b5989a655d41c1a3712717f0cc428556a1d56efdc6c5efd51f5724f04b6f48c6823972b5e818b552112fa6b331ec59625af00c7b419a9a93f726e4201af3e695ad3daac148b2b5700b4333dc393c30786221f65e654710024038c72601db36ab285a50bc870128fd88191ef263da620f14d91e3a3da4eb1c465ff65ec6d2902ef2795837c9a398f945ff6c2610145551968a1eeb0e12626f3"
+  }
+ ], 
+ "signed": {
+  "_type": "Mirrors", 
+  "expires": "2013-11-23 08:35:15", 
+  "mirrors": [
+   {
+    "confined_target_paths": [
+     ""
+    ], 
+    "metadata_path": "metadata", 
+    "targets_path": "targets", 
+    "url_prefix": "http://localhost:8000"
+   }, 
+   {
+    "confined_target_paths": [
+     ""
+    ], 
+    "metadata_path": "metadata", 
+    "targets_path": "targets", 
+    "url_prefix": "http://localhost:8001"
+   }, 
+   {
+    "confined_target_paths": [
+     ""
+    ], 
+    "metadata_path": "metadata", 
+    "targets_path": "targets", 
+    "url_prefix": "http://localhost:8002"
+   }
+  ], 
+  "ts": "2012-11-23 08:35:15"
+ }
+}
