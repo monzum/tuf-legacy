@@ -1,7 +1,7 @@
 """
 
 <Program Name>
- tuf_api_translator.py
+ network_forwarder.py
 
 <Author>
  Jerry B. Backer
@@ -10,7 +10,7 @@
  October 26, 2012
 
 <Purpose>
- tuf_api_translator.py takes parameters of low level socket api 
+  network_forwarder.py takes parameters of low level socket api 
  functions (i.e. socket, connect,send) from the interposition interface (see *****.py), 
  stores information relevant for tuf client, wraps the update request in tuf api for
  download, and returns the status of the update to the software updater.
@@ -24,7 +24,7 @@ sys.path.append("TUF/src/")
 
 from tuf_client_api import *
 
-class TUFTranslator(NetworkCallProcessor):
+class NetworkForwarder(NetworkCallProcessor):
  """
  <Purpose>
   TUFTranslator tracks netwok calls made by the legacy application
